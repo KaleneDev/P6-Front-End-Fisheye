@@ -122,8 +122,8 @@ function createMediaElement(element, photographerName) {
     );
     userMediaImage.setAttribute("alt", element.title);
 
-    userMediaImage.addEventListener("click", () => {
-        event.stopPropagation();
+    userMediaImage.addEventListener("click", (e) => {
+        e.stopPropagation();
         displayLightbox(userMediaImage.src, userMediaImage.alt);
     });
 
@@ -142,7 +142,6 @@ function createMediaElement(element, photographerName) {
 function createMainSection(data) {
     const { media, name } = data;
     
-
     const main = createElementWithClass("div", "userProfile-main");
     const wrapperMedia = createElementWithClass("div", "userProfile-wrapper");
 
