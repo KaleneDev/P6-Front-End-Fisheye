@@ -63,7 +63,7 @@ $prefix: ".userProfile"
             margin: 0.25rem 0
             margin-bottom: 1rem
 
-        & .profile-image
+        & .profile-image, & .lightbox-image
             height: 100px // taille plus petite pour mobile
             width: 100px // taille plus petite pour mobile
             object-fit: cover
@@ -139,16 +139,46 @@ $prefix: ".userProfile"
         z-index: 710
         padding: 1rem
         margin: 0 3rem
-        .lightbox-close
-            position: absolute
-            top: 0
-            right: -3rem
-            cursor: pointer
-        .lightbox-title
+        .lightbox
+            &-prev
+                position: absolute
+                top: 50%
+                left: -2.5rem
+                transform: translateY(-50%)
+                cursor: pointer
+                background-color: transparent
+                border: none
+                outline: none
+                font-size: 4em
+                color: $color-primary
+            &-next
+                position: absolute
+                top: 50%
+                right: -2.5rem
+                transform: translateY(-50%)
+                cursor: pointer
+                background-color: transparent
+                border: none
+                outline: none
+                font-size: 4em
+                color: $color-primary
+
+            &-close
+                position: absolute
+                top: 2.5rem
+                right: -2.5rem
+                cursor: pointer
+                background-color: transparent
+                border: none
+                outline: none
+                .fa-xmark
+                    font-size: 2.4em
+                    color: $color-primary
+        &-title
             color: $color-primary
             font-size: 24px
             font-weight: 400
-        .profile-image
+        .profile-image, .lightbox-image
             height: 100%
             width: 100%
             object-fit: cover
@@ -189,7 +219,7 @@ $prefix: ".userProfile"
             & profile-location
                 font-size: 20px
 
-            & .profile-image
+            & .profile-image, &.lightbox-image
                 height: 200px
                 width: 200px
                 transform: scale(1.3)

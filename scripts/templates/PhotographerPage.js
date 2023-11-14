@@ -4,8 +4,8 @@ function createElementWithClass(elementType, className) {
     return element;
 }
 
-function createImage(src, alt) {
-    const img = createElementWithClass("img", "profile-image");
+function createImage(src, alt, className) {
+    const img = createElementWithClass("img", className || "profile-image");
     img.setAttribute("src", src);
     img.setAttribute("alt", alt);
     return img;
@@ -53,7 +53,7 @@ function createElementWithText(elementType, className, text) {
 }
 
 // Fonction pour créer et afficher une lightbox
-function displayLightbox(imageSrc, imageAlt) {
+function displayLightbox(imageSrc, imageAlt, images, index, photographerName) {
     // Créer l'élément de fond de la lightbox
     const lightboxBackground = createElementWithClass(
         "div",
@@ -63,8 +63,6 @@ function displayLightbox(imageSrc, imageAlt) {
         lightboxBackground.remove(); // Cela fermera la lightbox lorsqu'on clique à l'extérieur de l'image
     });
 
-
-
     // Créer le conteneur de la lightbox
     const lightboxContainer = createElementWithClass(
         "div",
@@ -72,17 +70,17 @@ function displayLightbox(imageSrc, imageAlt) {
     );
     lightboxContainer.addEventListener("click", (event) => {
         event.stopPropagation(); // Empêche la fermeture lorsque l'on clique sur l'image/contenu de la lightbox
-        console.log("clicked");
     });
     lightboxBackground.appendChild(lightboxContainer);
 
     const lightboxClose = createElementWithClass("button", "lightbox-close");
-    lightboxClose.textContent = "Close";
+    lightboxClose.innerHTML = '<i class="fa-solid fa-xmark"></i>';
+
     lightboxClose.addEventListener("click", () => {
         lightboxBackground.remove(); // Cela fermera la lightbox lorsqu'on clique sur le bouton de fermeture
     });
     lightboxContainer.appendChild(lightboxClose);
-    
+
     // Créer l'image pour la lightbox
     const lightboxImage = createImage(imageSrc, imageAlt, "lightbox-image");
     lightboxContainer.appendChild(lightboxImage);
@@ -97,10 +95,44 @@ function displayLightbox(imageSrc, imageAlt) {
 
     // Ajouter la lightbox au corps du document
     document.body.appendChild(lightboxBackground);
+
+    // Ajouter des boutons de navigation
+    const prevButton = createElementWithClass("button", "lightbox-prev");
+    prevButton.textContent = "<"; // ou utilisez une icône
+    prevButton.onclick = () => navigateLightbox(-1);
+
+    const nextButton = createElementWithClass("button", "lightbox-next");
+    nextButton.textContent = ">"; // ou utilisez une icône
+    nextButton.onclick = () => navigateLightbox(1);
+
+    lightboxContainer.appendChild(prevButton);
+    lightboxContainer.appendChild(lightboxImage);
+    lightboxContainer.appendChild(nextButton);
+
+    let currentImageIndex = index;
+    function navigateLightbox(direction) {
+        currentImageIndex += direction;
+        // Gérer les limites
+        if (currentImageIndex < 0) {
+            currentImageIndex = images.length - 1;
+        } else if (currentImageIndex >= images.length) {
+            currentImageIndex = 0;
+        }
+        // Mettre à jour l'image de la lightbox
+        const newImageSrc = images[currentImageIndex].image;
+        const newImageAlt = images[currentImageIndex].title;
+        const lightboxImage = document.querySelector(".lightbox-image");
+        lightboxImage.setAttribute(
+            "src",
+            `assets/photographers/${photographerName}/` + newImageSrc
+        );
+        lightboxImage.setAttribute("alt", newImageAlt);
+    }
 }
+// let currentImageIndex = 0;
 
 // Fonction pour créer un élément média
-function createMediaElement(element, photographerName) {
+function createMediaElement(element, photographerName, media, index) {
     const userMedia = createElementWithClass("div", "userProfile-media");
     const userMediaImage = createElementWithClass(
         "img",
@@ -121,18 +153,25 @@ function createMediaElement(element, photographerName) {
         `assets/photographers/${photographerName}/${element.image}`
     );
     userMediaImage.setAttribute("alt", element.title);
-
     userMediaImage.addEventListener("click", (e) => {
         e.stopPropagation();
-        displayLightbox(userMediaImage.src, userMediaImage.alt);
+        displayLightbox(
+            userMediaImage.src,
+            userMediaImage.alt,
+            media,
+            index,
+            photographerName
+        );
     });
 
     userMediaTitle.textContent = element.title;
     userMediaLikes.textContent = `${element.likes} likes`;
 
-    mediaBlock.appendChild(userMediaTitle);``
+    mediaBlock.appendChild(userMediaTitle);
+    ``;
     mediaBlock.appendChild(userMediaLikes);
-    userMedia.appendChild(userMediaImage);``
+    userMedia.appendChild(userMediaImage);
+    ``;
     userMedia.appendChild(mediaBlock);
 
     return userMedia;
@@ -141,12 +180,11 @@ function createMediaElement(element, photographerName) {
 // Fonction pour créer la section principale avec les médias
 function createMainSection(data) {
     const { media, name } = data;
-    
     const main = createElementWithClass("div", "userProfile-main");
     const wrapperMedia = createElementWithClass("div", "userProfile-wrapper");
 
-    media.forEach((element) => {
-        const mediaElement = createMediaElement(element, name);
+    media.forEach((element, index) => {
+        const mediaElement = createMediaElement(element, name, media, index);
         wrapperMedia.appendChild(mediaElement);
     });
 
@@ -155,7 +193,6 @@ function createMainSection(data) {
 }
 
 function photographerTemplate(data) {
-    console.log(data);
     function getUserProfileDOM() {
         const userProfile = createElementWithClass("div", "userProfile");
         userProfile.appendChild(createProfileHeader(data));

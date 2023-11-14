@@ -59,7 +59,7 @@
   margin: 0.25rem 0;
   margin-bottom: 1rem;
 }
-.userProfile-header .profile-image {
+.userProfile-header .profile-image, .userProfile-header .lightbox-image {
   height: 100px;
   width: 100px;
   object-fit: cover;
@@ -139,18 +139,49 @@
   padding: 1rem;
   margin: 0 3rem;
 }
+.lightbox-container .lightbox-prev {
+  position: absolute;
+  top: 50%;
+  left: -2.5rem;
+  transform: translateY(-50%);
+  cursor: pointer;
+  background-color: transparent;
+  border: none;
+  outline: none;
+  font-size: 4em;
+  color: #901C1C;
+}
+.lightbox-container .lightbox-next {
+  position: absolute;
+  top: 50%;
+  right: -2.5rem;
+  transform: translateY(-50%);
+  cursor: pointer;
+  background-color: transparent;
+  border: none;
+  outline: none;
+  font-size: 4em;
+  color: #901C1C;
+}
 .lightbox-container .lightbox-close {
   position: absolute;
-  top: 0;
-  right: -3rem;
+  top: 2.5rem;
+  right: -2.5rem;
   cursor: pointer;
+  background-color: transparent;
+  border: none;
+  outline: none;
 }
-.lightbox-container .lightbox-title {
+.lightbox-container .lightbox-close .fa-xmark {
+  font-size: 2.4em;
+  color: #901C1C;
+}
+.lightbox-container-title {
   color: #901C1C;
   font-size: 24px;
   font-weight: 400;
 }
-.lightbox-container .profile-image {
+.lightbox-container .profile-image, .lightbox-container .lightbox-image {
   height: 100%;
   width: 100%;
   object-fit: cover;
@@ -193,7 +224,7 @@
   .userProfile-header profile-location {
     font-size: 20px;
   }
-  .userProfile-header .profile-image {
+  .userProfile-header .profile-image, .userProfile-header.lightbox-image {
     height: 200px;
     width: 200px;
     transform: scale(1.3);
