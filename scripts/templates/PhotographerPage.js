@@ -121,6 +121,8 @@ function displayLightbox(imageSrc, imageAlt, images, index, photographerName) {
         // Mettre à jour l'image de la lightbox
         const newImageSrc = images[currentImageIndex].image;
         const newImageAlt = images[currentImageIndex].title;
+        const lightboxTitle = document.querySelector(".lightbox-title");
+        lightboxTitle.textContent = newImageAlt;
         const lightboxImage = document.querySelector(".lightbox-image");
         lightboxImage.setAttribute(
             "src",
@@ -165,7 +167,8 @@ function createMediaElement(element, photographerName, media, index) {
     });
 
     userMediaTitle.textContent = element.title;
-    userMediaLikes.textContent = `${element.likes} likes`;
+    userMediaLikes.textContent = `${element.likes}`;
+    userMediaLikes.innerHTML = element.likes + '<i class="fa-solid fa-heart"></i>';
 
     mediaBlock.appendChild(userMediaTitle);
     ``;
