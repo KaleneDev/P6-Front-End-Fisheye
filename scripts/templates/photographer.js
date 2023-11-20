@@ -1,7 +1,6 @@
 function photographerTemplate(data) {
     const { name, portrait, city, country, price, tagline, id } = data;
     const picture = `assets/Photographers_ID_Photos/${portrait}`;
-    console.log(portrait);
 
     function getUserCardDOM() {
         const article = document.createElement("article");
@@ -19,7 +18,7 @@ function photographerTemplate(data) {
         imgLink.appendChild(img);
         h2Link.setAttribute("href", `photographer.html?id=${id}`);
         h2Link.appendChild(h2name);
-
+        
         img.classList.add("userCard-img");
         article.classList.add("userCard");
         h2name.classList.add("userCard-name");

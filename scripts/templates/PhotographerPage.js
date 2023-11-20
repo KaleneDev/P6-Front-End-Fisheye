@@ -10,7 +10,12 @@ function createImage(src, alt, className) {
     img.setAttribute("alt", alt);
     return img;
 }
-
+function createVideo(src, alt, className) {
+    const video = createElementWithClass("video", className || "profile-video");
+    video.setAttribute("src", src);
+    video.setAttribute("alt", alt);
+    return video;
+}
 function createProfileHeader(data) {
     const { name, city, country, tagline } = data;
     const header = createElementWithClass("div", "userProfile-header");
@@ -53,7 +58,7 @@ function createElementWithText(elementType, className, text) {
 }
 
 // Fonction pour créer et afficher une lightbox
-function displayLightbox(imageSrc, imageAlt, images, index, photographerName) {
+function displayLightbox(source, alt, array, index, photographerName) {
     // Créer l'élément de fond de la lightbox
     const lightboxBackground = createElementWithClass(
         "div",
@@ -82,15 +87,12 @@ function displayLightbox(imageSrc, imageAlt, images, index, photographerName) {
     lightboxContainer.appendChild(lightboxClose);
 
     // Créer l'image pour la lightbox
-    const lightboxImage = createImage(imageSrc, imageAlt, "lightbox-image");
-    lightboxContainer.appendChild(lightboxImage);
+
+    // const lightboxImage = createImage(imageSrc, imageAlt, "lightbox-image");
+    // lightboxContainer.appendChild(lightboxImage);
 
     // Créer le titre de l'image pour l'accessibilité
-    const lightboxTitle = createElementWithText(
-        "p",
-        "lightbox-title",
-        imageAlt
-    );
+    const lightboxTitle = createElementWithText("p", "lightbox-title", alt);
     lightboxContainer.appendChild(lightboxTitle);
 
     // Ajouter la lightbox au corps du document
@@ -106,7 +108,6 @@ function displayLightbox(imageSrc, imageAlt, images, index, photographerName) {
     nextButton.onclick = () => navigateLightbox(1);
 
     lightboxContainer.appendChild(prevButton);
-    lightboxContainer.appendChild(lightboxImage);
     lightboxContainer.appendChild(nextButton);
 
     let currentImageIndex = index;
@@ -114,33 +115,60 @@ function displayLightbox(imageSrc, imageAlt, images, index, photographerName) {
         currentImageIndex += direction;
         // Gérer les limites
         if (currentImageIndex < 0) {
-            currentImageIndex = images.length - 1;
-        } else if (currentImageIndex >= images.length) {
+            currentImageIndex = array.length - 1;
+        } else if (currentImageIndex >= array.length) {
             currentImageIndex = 0;
         }
-        // Mettre à jour l'image de la lightbox
-        const newImageSrc = images[currentImageIndex].image;
-        const newImageAlt = images[currentImageIndex].title;
+
+        const newMediaSrc =
+            array[currentImageIndex].image || array[currentImageIndex].video;
+        const newMediaAlt = array[currentImageIndex].title;
+
+        // Assurez-vous d'avoir un conteneur pour les médias
         const lightboxTitle = document.querySelector(".lightbox-title");
-        lightboxTitle.textContent = newImageAlt;
-        const lightboxImage = document.querySelector(".lightbox-image");
-        lightboxImage.setAttribute(
-            "src",
-            `assets/photographers/${photographerName}/` + newImageSrc
+        lightboxTitle.textContent = newMediaAlt;
+        const lightboxMedia = document.querySelector(
+            ".lightbox-container img, .lightbox-container video"
         );
-        lightboxImage.setAttribute("alt", newImageAlt);
+
+        let newMediaElement;
+
+        if (array[currentImageIndex].image) {
+            newMediaElement = document.createElement("img");
+            newMediaElement.classList.add("lightbox-image");
+        } else if (array[currentImageIndex].video) {
+            newMediaElement = document.createElement("video");
+            newMediaElement.classList.add("lightbox-video");
+            newMediaElement.setAttribute("controls", "controls");
+        }
+
+        newMediaElement.setAttribute(
+            "src",
+            `assets/photographers/${photographerName}/` + newMediaSrc
+        );
+        newMediaElement.setAttribute("alt", newMediaAlt);
+        // Remplacer l'ancien élément média par le nouveau
+        if (lightboxMedia) {
+            lightboxContainer.replaceChild(newMediaElement, lightboxMedia);
+        } else {
+            lightboxContainer.appendChild(newMediaElement);
+        }
     }
+
+    checkedTypeElementPopup(source, alt, lightboxContainer);
 }
-// let currentImageIndex = 0;
 
 // Fonction pour créer un élément média
 function createMediaElement(element, photographerName, media, index) {
+    // if element is video or image
+
     const userMedia = createElementWithClass("div", "userProfile-media");
-    const userMediaImage = createElementWithClass(
-        "img",
-        "userProfile-media-image"
-    );
     const mediaBlock = createElementWithClass("div", "userProfile-media-block");
+    const userMediaVideoContainer = createElementWithClass(
+        "div",
+        "userProfile-media-container"
+    );
+
     const userMediaTitle = createElementWithClass(
         "h2",
         "userProfile-media-title"
@@ -149,32 +177,27 @@ function createMediaElement(element, photographerName, media, index) {
         "span",
         "userProfile-media-likes"
     );
-
-    userMediaImage.setAttribute(
-        "src",
-        `assets/photographers/${photographerName}/${element.image}`
-    );
-    userMediaImage.setAttribute("alt", element.title);
-    userMediaImage.addEventListener("click", (e) => {
-        e.stopPropagation();
-        displayLightbox(
-            userMediaImage.src,
-            userMediaImage.alt,
-            media,
-            index,
-            photographerName
-        );
-    });
-
     userMediaTitle.textContent = element.title;
     userMediaLikes.textContent = `${element.likes}`;
-    userMediaLikes.innerHTML = element.likes + '<i class="fa-solid fa-heart"></i>';
+    userMediaLikes.innerHTML =
+        element.likes + '<i class="fa-solid fa-heart"></i>';
 
+    const mediaChecked = checkedTypeElement(
+        element,
+        photographerName,
+        media,
+        index,
+        userMedia,
+        userMediaVideoContainer
+    );
     mediaBlock.appendChild(userMediaTitle);
-    ``;
+
     mediaBlock.appendChild(userMediaLikes);
-    userMedia.appendChild(userMediaImage);
-    ``;
+
+    userMedia.appendChild(userMediaVideoContainer);
+
+    userMediaVideoContainer.appendChild(mediaChecked);
+
     userMedia.appendChild(mediaBlock);
 
     return userMedia;
@@ -185,16 +208,95 @@ function createMainSection(data) {
     const { media, name } = data;
     const main = createElementWithClass("div", "userProfile-main");
     const wrapperMedia = createElementWithClass("div", "userProfile-wrapper");
-
     media.forEach((element, index) => {
         const mediaElement = createMediaElement(element, name, media, index);
+
         wrapperMedia.appendChild(mediaElement);
     });
 
     main.appendChild(wrapperMedia);
     return main;
 }
+// if element is video or photo
+const checkedTypeElement = (
+    element,
+    photographerName,
+    media,
+    index,
+    userMedia,
+    userMediaVideoContainer
+) => {
+    if (element.image) {
+        const userMediaImage = createImage(
+            element.image,
+            element.title,
+            "userProfile-media-image"
+        );
+        userMediaImage.setAttribute(
+            "src",
+            `assets/photographers/${photographerName}/${element.image}`
+        );
+        userMediaImage.setAttribute("alt", element.title);
+        userMediaImage.addEventListener("click", (e) => {
+            e.stopPropagation();
+            displayLightbox(
+                userMediaImage.src,
+                userMediaImage.alt,
+                media,
+                index,
+                photographerName
+            );
+        });
+        // add class video at parent
 
+        userMedia.appendChild(userMediaImage);
+
+        return userMediaImage;
+    } else if (element.video) {
+        const userMediaVideo = createElementWithClass(
+            "video",
+            "userProfile-media-video"
+        );
+
+        userMediaVideo.setAttribute(
+            "src",
+            `assets/photographers/${photographerName}/${element.video}`
+        );
+
+        userMediaVideo.setAttribute("alt", element.title);
+
+        userMediaVideoContainer.addEventListener("click", (e) => {
+            e.stopPropagation();
+            displayLightbox(
+                userMediaVideo.src,
+                element.title,
+                media,
+                index,
+                photographerName
+            );
+        });
+
+        userMedia.appendChild(userMediaVideo);
+        userMediaVideoContainer.classList.add("video");
+        return userMediaVideo;
+    }
+};
+const checkedTypeElementPopup = (source, alt, lightboxContainer) => {
+    if (source.includes("mp4")) {
+        const lightboxVideo = createVideo(source, alt, "lightbox-video");
+        lightboxVideo.setAttribute("controls", "controls");
+        lightboxVideo.setAttribute("autoplay", ""); // Ajoutez autoplay
+        lightboxVideo.setAttribute("preload", "auto"); // Améliore le chargement
+        lightboxContainer.appendChild(lightboxVideo);
+
+        return lightboxVideo
+            .play()
+            .catch((e) => console.error("Erreur de lecture de la vidéo: ", e)); // Gestion d'erreur
+    } else {
+        const lightboxImage = createImage(source, alt, "lightbox-image");
+        return lightboxContainer.appendChild(lightboxImage);
+    }
+};
 function photographerTemplate(data) {
     function getUserProfileDOM() {
         const userProfile = createElementWithClass("div", "userProfile");
