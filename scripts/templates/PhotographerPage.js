@@ -31,7 +31,8 @@ function createProfileHeader(data) {
     );
 
     contactButton.textContent = "Contactez-moi";
-    contactButton.setAttribute("onclick", "displayModal()");
+    // contactButton.setAttribute("onclick", "displayModal()");
+    contactButton.addEventListener("click", displayModal());
 
     header.appendChild(profileInfo);
     header.appendChild(contactButton);
@@ -164,7 +165,7 @@ function createMediaElement(element, photographerName, media, index) {
 
     const userMedia = createElementWithClass("div", "userProfile-media");
     const mediaBlock = createElementWithClass("div", "userProfile-media-block");
-    const userMediaVideoContainer = createElementWithClass(
+    const userMediaContainer = createElementWithClass(
         "div",
         "userProfile-media-container"
     );
@@ -187,16 +188,15 @@ function createMediaElement(element, photographerName, media, index) {
         photographerName,
         media,
         index,
-        userMedia,
-        userMediaVideoContainer
+        userMediaContainer
     );
     mediaBlock.appendChild(userMediaTitle);
 
     mediaBlock.appendChild(userMediaLikes);
 
-    userMedia.appendChild(userMediaVideoContainer);
+    userMedia.appendChild(userMediaContainer);
 
-    userMediaVideoContainer.appendChild(mediaChecked);
+    userMediaContainer.appendChild(mediaChecked);
 
     userMedia.appendChild(mediaBlock);
 
@@ -217,14 +217,14 @@ function createMainSection(data) {
     main.appendChild(wrapperMedia);
     return main;
 }
+
 // if element is video or photo
 const checkedTypeElement = (
     element,
     photographerName,
     media,
     index,
-    userMedia,
-    userMediaVideoContainer
+    userMediaContainer
 ) => {
     if (element.image) {
         const userMediaImage = createImage(
@@ -237,6 +237,7 @@ const checkedTypeElement = (
             `assets/photographers/${photographerName}/${element.image}`
         );
         userMediaImage.setAttribute("alt", element.title);
+
         userMediaImage.addEventListener("click", (e) => {
             e.stopPropagation();
             displayLightbox(
@@ -247,10 +248,7 @@ const checkedTypeElement = (
                 photographerName
             );
         });
-        // add class video at parent
-
-        userMedia.appendChild(userMediaImage);
-
+        // userMedia.appendChild(userMediaImage);
         return userMediaImage;
     } else if (element.video) {
         const userMediaVideo = createElementWithClass(
@@ -265,7 +263,7 @@ const checkedTypeElement = (
 
         userMediaVideo.setAttribute("alt", element.title);
 
-        userMediaVideoContainer.addEventListener("click", (e) => {
+        userMediaContainer.addEventListener("click", (e) => {
             e.stopPropagation();
             displayLightbox(
                 userMediaVideo.src,
@@ -276,11 +274,12 @@ const checkedTypeElement = (
             );
         });
 
-        userMedia.appendChild(userMediaVideo);
-        userMediaVideoContainer.classList.add("video");
+        // userMedia.appendChild(userMediaVideo);
+        userMediaContainer.classList.add("video");
         return userMediaVideo;
     }
 };
+
 const checkedTypeElementPopup = (source, alt, lightboxContainer) => {
     if (source.includes("mp4")) {
         const lightboxVideo = createVideo(source, alt, "lightbox-video");
@@ -297,6 +296,7 @@ const checkedTypeElementPopup = (source, alt, lightboxContainer) => {
         return lightboxContainer.appendChild(lightboxImage);
     }
 };
+
 function photographerTemplate(data) {
     function getUserProfileDOM() {
         const userProfile = createElementWithClass("div", "userProfile");
