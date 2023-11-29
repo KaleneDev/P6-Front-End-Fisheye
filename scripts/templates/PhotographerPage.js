@@ -21,6 +21,7 @@ function createProfileHeader(data) {
     const header = createElementWithClass("div", "userProfile-header");
     const profileInfo = createElementWithClass("div", "profile-info");
     const contactButton = createElementWithClass("button", "profile-contact");
+    contactButton.setAttribute("id", "btn-contact");
 
     profileInfo.appendChild(createElementWithText("h1", "profile-name", name));
     profileInfo.appendChild(
@@ -31,8 +32,7 @@ function createProfileHeader(data) {
     );
 
     contactButton.textContent = "Contactez-moi";
-    // contactButton.setAttribute("onclick", "displayModal()");
-    contactButton.addEventListener("click", displayModal());
+    contactButton.addEventListener("click", displayModal);
 
     header.appendChild(profileInfo);
     header.appendChild(contactButton);
@@ -186,10 +186,24 @@ function createMediaElement(element, photographerName, media, index) {
     const mediaChecked = checkedTypeElement(
         element,
         photographerName,
-        media,
-        index,
-        userMediaContainer
     );
+    // if mediaChecked is video
+    userMedia.addEventListener("click", (e) => {
+        e.stopPropagation();
+        displayLightbox(
+            mediaChecked.src,
+            element.title,
+            media,
+            index,
+            photographerName
+        );
+    });
+    if (mediaChecked.tagName === "IMG") {
+        userMediaContainer.classList.add("image");
+    } else if (mediaChecked.tagName === "VIDEO") {
+        userMediaContainer.classList.add("video");
+    }
+
     mediaBlock.appendChild(userMediaTitle);
 
     mediaBlock.appendChild(userMediaLikes);
@@ -219,82 +233,53 @@ function createMainSection(data) {
 }
 
 // if element is video or photo
-const checkedTypeElement = (
-    element,
-    photographerName,
-    media,
-    index,
-    userMediaContainer
-) => {
-    if (element.image) {
+const checkedTypeElement = (media, photographerName) => {
+    if (media.image) {
         const userMediaImage = createImage(
-            element.image,
-            element.title,
+            media.image,
+            media.title,
             "userProfile-media-image"
         );
         userMediaImage.setAttribute(
             "src",
-            `assets/photographers/${photographerName}/${element.image}`
+            `assets/photographers/${photographerName}/${media.image}`
         );
-        userMediaImage.setAttribute("alt", element.title);
+        userMediaImage.setAttribute("alt", media.title);
 
-        userMediaImage.addEventListener("click", (e) => {
-            e.stopPropagation();
-            displayLightbox(
-                userMediaImage.src,
-                userMediaImage.alt,
-                media,
-                index,
-                photographerName
-            );
-        });
-        // userMedia.appendChild(userMediaImage);
         return userMediaImage;
-    } else if (element.video) {
+    } else if (media.video) {
         const userMediaVideo = createElementWithClass(
             "video",
             "userProfile-media-video"
         );
-
         userMediaVideo.setAttribute(
             "src",
-            `assets/photographers/${photographerName}/${element.video}`
+            `assets/photographers/${photographerName}/${media.video}`
         );
-
-        userMediaVideo.setAttribute("alt", element.title);
-
-        userMediaContainer.addEventListener("click", (e) => {
-            e.stopPropagation();
-            displayLightbox(
-                userMediaVideo.src,
-                element.title,
-                media,
-                index,
-                photographerName
-            );
-        });
-
-        // userMedia.appendChild(userMediaVideo);
-        userMediaContainer.classList.add("video");
+        userMediaVideo.setAttribute("alt", media.title);
         return userMediaVideo;
     }
 };
 
 const checkedTypeElementPopup = (source, alt, lightboxContainer) => {
-    if (source.includes("mp4")) {
-        const lightboxVideo = createVideo(source, alt, "lightbox-video");
-        lightboxVideo.setAttribute("controls", "controls");
-        lightboxVideo.setAttribute("autoplay", ""); // Ajoutez autoplay
-        lightboxVideo.setAttribute("preload", "auto"); // Améliore le chargement
-        lightboxContainer.appendChild(lightboxVideo);
+    let lightboxElement;
+    const isVideo = source.includes("mp4");
 
-        return lightboxVideo
+    if (isVideo) {
+        lightboxElement = createVideo(source, alt, "lightbox-video");
+
+        lightboxElement.setAttribute("controls", "controls");
+        lightboxElement.setAttribute("autoplay", ""); // Ajoutez autoplay
+        lightboxElement.setAttribute("preload", "auto"); // Améliore le chargement
+
+        lightboxElement
             .play()
             .catch((e) => console.error("Erreur de lecture de la vidéo: ", e)); // Gestion d'erreur
     } else {
-        const lightboxImage = createImage(source, alt, "lightbox-image");
-        return lightboxContainer.appendChild(lightboxImage);
+        lightboxElement = createImage(source, alt, "lightbox-image");
     }
+    lightboxContainer.appendChild(lightboxElement);
+    return lightboxElement;
 };
 
 function photographerTemplate(data) {

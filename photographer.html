@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <link href="dist/css/style.css" rel="stylesheet" type="text/css" />
+        <link href="dist/css/main.css" rel="stylesheet" type="text/css" />
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
@@ -10,7 +10,13 @@
             href="https://fonts.googleapis.com/css?family=DM+Sans&display=swap"
             rel="stylesheet"
         />
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+        <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+            integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
+            crossorigin="anonymous"
+            referrerpolicy="no-referrer"
+        />
 
         <title>Fisheye - photographe</title>
     </head>
@@ -24,27 +30,30 @@
                 />
             </a>
         </header>
-        <main id="main">
-    
-        </main>
+        <main id="main"></main>
         <div id="contact_modal">
             <div class="modal">
-                <header>
+                <div>
                     <h2>Contactez-moi</h2>
-                    <img src="assets/icons/close.svg" onclick="closeModal()" />
-                </header>
+                    <img src="assets/icons/close.svg" onclick="closeModal()" class="modal-close" />
+                </div>
                 <form>
-                    <div>
+                    <div class="form-container">
                         <label>Prénom</label>
                         <input />
+                        <label>Nom</label>
+                        <input />
+                        <label>Email</label>
+                        <input />
+                        <label>Votre message</label>
+                        <textarea></textarea>
                     </div>
-                    <button class="contact_button">Envoyer</button>
+                    <button class="modal-button">Envoyer</button>
                 </form>
             </div>
         </div>
         <script src="/scripts/pages/photographer.js"></script>
         <script src="/scripts/templates/PhotographerPage.js"></script>
         <script src="/scripts/utils/contactForm.js"></script>
-
     </body>
 </html>
