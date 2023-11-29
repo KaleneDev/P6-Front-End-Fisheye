@@ -183,24 +183,22 @@ function createMediaElement(element, photographerName, media, index) {
     userMediaLikes.innerHTML =
         element.likes + '<i class="fa-solid fa-heart"></i>';
 
-    const mediaChecked = checkedTypeElement(
-        element,
-        photographerName,
-    );
+    const mediaChecked = checkedTypeElement(element, photographerName);
+
     // if mediaChecked is video
     userMedia.addEventListener("click", (e) => {
         e.stopPropagation();
         displayLightbox(
-            mediaChecked.src,
+            mediaChecked.getDom().src,
             element.title,
             media,
             index,
             photographerName
         );
     });
-    if (mediaChecked.tagName === "IMG") {
+    if (!mediaChecked.isVideo()) {
         userMediaContainer.classList.add("image");
-    } else if (mediaChecked.tagName === "VIDEO") {
+    } else {
         userMediaContainer.classList.add("video");
     }
 
@@ -210,7 +208,7 @@ function createMediaElement(element, photographerName, media, index) {
 
     userMedia.appendChild(userMediaContainer);
 
-    userMediaContainer.appendChild(mediaChecked);
+    userMediaContainer.appendChild(mediaChecked.getDom());
 
     userMedia.appendChild(mediaBlock);
 
@@ -231,35 +229,6 @@ function createMainSection(data) {
     main.appendChild(wrapperMedia);
     return main;
 }
-
-// if element is video or photo
-const checkedTypeElement = (media, photographerName) => {
-    if (media.image) {
-        const userMediaImage = createImage(
-            media.image,
-            media.title,
-            "userProfile-media-image"
-        );
-        userMediaImage.setAttribute(
-            "src",
-            `assets/photographers/${photographerName}/${media.image}`
-        );
-        userMediaImage.setAttribute("alt", media.title);
-
-        return userMediaImage;
-    } else if (media.video) {
-        const userMediaVideo = createElementWithClass(
-            "video",
-            "userProfile-media-video"
-        );
-        userMediaVideo.setAttribute(
-            "src",
-            `assets/photographers/${photographerName}/${media.video}`
-        );
-        userMediaVideo.setAttribute("alt", media.title);
-        return userMediaVideo;
-    }
-};
 
 const checkedTypeElementPopup = (source, alt, lightboxContainer) => {
     let lightboxElement;
