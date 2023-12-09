@@ -8,10 +8,10 @@ const checkedTypeElement = (media, photographerName) => {
     }
     function getDom() {
         if (media.image) {
-            const userMediaImage = createImage(
+            const userMediaImage = createElement().createImage(
+                "userProfile-media-image",
                 media.image,
-                media.title,
-                "userProfile-media-image"
+                media.title
             );
             userMediaImage.setAttribute(
                 "src",
@@ -21,9 +21,10 @@ const checkedTypeElement = (media, photographerName) => {
 
             return userMediaImage;
         } else if (media.video) {
-            const userMediaVideo = createElementWithClass(
-                "video",
-                "userProfile-media-video"
+            const userMediaVideo = createElement().createVideo(
+                "userProfile-media-video",
+                media.video,
+                media.title
             );
             userMediaVideo.setAttribute(
                 "src",
@@ -36,5 +37,56 @@ const checkedTypeElement = (media, photographerName) => {
     return {
         getDom,
         isVideo,
+    };
+};
+
+// Fonction pour créer un élément média
+
+const createElement = () => {
+    function checkedTypeClass(classTypeClass, type) {
+        const element = document.createElement(type);
+        // console.log(classTypeClass);
+        // if className has # ou .
+        if (classTypeClass.includes("#")) {
+            classTypeClass = classTypeClass.replace("#", "");
+            element.id = classTypeClass;
+            return element;
+        } else if (classTypeClass.includes(".")) {
+            classTypeClass = classTypeClass.replace(".", "");
+            element.classList.add(classTypeClass);
+            return element;
+        } else {
+            element.classList.add(classTypeClass);
+            return element;
+        }
+    }
+
+    function createElementWithClass(type, className) {
+        const element = checkedTypeClass(className, type);
+        return element;
+    }
+    function createElementWithText(type, className, text) {
+        const element = checkedTypeClass(className, type);
+        element.textContent = text;
+        return element;
+    }
+    function createImage(classImage, src, alt) {
+        const img = checkedTypeClass(classImage, "img");
+        img.src = src;
+        img.alt = alt;
+        return img;
+    }
+    function createVideo(calssVideo, src, alt) {
+        const video = checkedTypeClass(calssVideo, "video");
+        video.src = src;
+        video.alt = alt;
+        return video;
+    }
+
+    return {
+        createImage,
+        createVideo,
+        createElementWithClass,
+        createElementWithText,
     };
 };

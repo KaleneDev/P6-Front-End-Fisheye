@@ -1,41 +1,43 @@
-function createElementWithClass(elementType, className) {
-    const element = document.createElement(elementType);
-    element.classList.add(className);
-    return element;
-}
-
-function createImage(src, alt, className) {
-    const img = createElementWithClass("img", className || "profile-image");
-    img.setAttribute("src", src);
-    img.setAttribute("alt", alt);
-    return img;
-}
-function createVideo(src, alt, className) {
-    const video = createElementWithClass("video", className || "profile-video");
-    video.setAttribute("src", src);
-    video.setAttribute("alt", alt);
-    return video;
-}
 function createProfileHeader(data) {
     const { name, city, country, tagline } = data;
-    const header = createElementWithClass("div", "userProfile-header");
-    const profileInfo = createElementWithClass("div", "profile-info");
-    const contactButton = createElementWithClass("button", "profile-contact");
+    const header = createElement().createElementWithClass(
+        "div",
+        "userProfile-header"
+    );
+    const profileInfo = createElement().createElementWithClass(
+        "div",
+        "profile-info"
+    );
+    const contactButton = createElement().createElementWithClass(
+        "button",
+        "profile-contact"
+    );
     contactButton.setAttribute("id", "btn-contact");
 
-    profileInfo.appendChild(createElementWithText("h1", "profile-name", name));
     profileInfo.appendChild(
-        createElementWithText("span", "profile-location", `${city}, ${country}`)
+        createElement().createElementWithText("h1", "profile-name", name)
+    );
+
+    profileInfo.appendChild(
+        createElement().createElementWithText(
+            "span",
+            "profile-location",
+            `${city}, ${country}`
+        )
     );
     profileInfo.appendChild(
-        createElementWithText("span", "profile-tagline", tagline)
+        createElement().createElementWithText(
+            "span",
+            "profile-tagline",
+            tagline
+        )
     );
 
     contactButton.textContent = "Contactez-moi";
-    contactButton.addEventListener("click", displayModal);
+    contactButton.addEventListener("click", () => displayModal(data));
 
     header.appendChild(profileInfo);
-    header.appendChild(contactButton);
+    ~~header.appendChild(contactButton);
     header.appendChild(createImageContainer(data));
 
     return header;
@@ -44,24 +46,20 @@ function createProfileHeader(data) {
 function createImageContainer(data) {
     const { name, portrait } = data;
     const picture = `assets/Photographers_ID_Photos/${portrait}`;
-    const imageContainer = createElementWithClass(
+    const imageContainer = createElement().createElementWithClass(
         "div",
         "profile-imageContainer"
     );
-    imageContainer.appendChild(createImage(picture, name));
-    return imageContainer;
-}
+    const image = createElement().createImage("profile-image", picture, name);
 
-function createElementWithText(elementType, className, text) {
-    const element = createElementWithClass(elementType, className);
-    element.textContent = text;
-    return element;
+    imageContainer.appendChild(image);
+    return imageContainer;
 }
 
 // Fonction pour créer et afficher une lightbox
 function displayLightbox(source, alt, array, index, photographerName) {
     // Créer l'élément de fond de la lightbox
-    const lightboxBackground = createElementWithClass(
+    const lightboxBackground = createElement().createElementWithClass(
         "div",
         "lightbox-background"
     );
@@ -70,7 +68,7 @@ function displayLightbox(source, alt, array, index, photographerName) {
     });
 
     // Créer le conteneur de la lightbox
-    const lightboxContainer = createElementWithClass(
+    const lightboxContainer = createElement().createElementWithClass(
         "div",
         "lightbox-container"
     );
@@ -79,7 +77,10 @@ function displayLightbox(source, alt, array, index, photographerName) {
     });
     lightboxBackground.appendChild(lightboxContainer);
 
-    const lightboxClose = createElementWithClass("button", "lightbox-close");
+    const lightboxClose = createElement().createElementWithClass(
+        "button",
+        "lightbox-close"
+    );
     lightboxClose.innerHTML = '<i class="fa-solid fa-xmark"></i>';
 
     lightboxClose.addEventListener("click", () => {
@@ -89,22 +90,28 @@ function displayLightbox(source, alt, array, index, photographerName) {
 
     // Créer l'image pour la lightbox
 
-    // const lightboxImage = createImage(imageSrc, imageAlt, "lightbox-image");
-    // lightboxContainer.appendChild(lightboxImage);
-
     // Créer le titre de l'image pour l'accessibilité
-    const lightboxTitle = createElementWithText("p", "lightbox-title", alt);
-    lightboxContainer.appendChild(lightboxTitle);
+    const lightboxTitle = createElement().createElementWithText(
+        "p",
+        "lightbox-title",
+        alt
+    );
 
     // Ajouter la lightbox au corps du document
     document.body.appendChild(lightboxBackground);
 
     // Ajouter des boutons de navigation
-    const prevButton = createElementWithClass("button", "lightbox-prev");
+    const prevButton = createElement().createElementWithClass(
+        "button",
+        "lightbox-prev"
+    );
     prevButton.textContent = "<"; // ou utilisez une icône
     prevButton.onclick = () => navigateLightbox(-1);
 
-    const nextButton = createElementWithClass("button", "lightbox-next");
+    const nextButton = createElement().createElementWithClass(
+        "button",
+        "lightbox-next"
+    );
     nextButton.textContent = ">"; // ou utilisez une icône
     nextButton.onclick = () => navigateLightbox(1);
 
@@ -142,7 +149,7 @@ function displayLightbox(source, alt, array, index, photographerName) {
             newMediaElement.classList.add("lightbox-video");
             newMediaElement.setAttribute("controls", "controls");
         }
-
+        console.log(photographerName);
         newMediaElement.setAttribute(
             "src",
             `assets/photographers/${photographerName}/` + newMediaSrc
@@ -157,24 +164,32 @@ function displayLightbox(source, alt, array, index, photographerName) {
     }
 
     checkedTypeElementPopup(source, alt, lightboxContainer);
+    lightboxContainer.appendChild(lightboxTitle);
+
 }
 
 // Fonction pour créer un élément média
 function createMediaElement(element, photographerName, media, index) {
     // if element is video or image
 
-    const userMedia = createElementWithClass("div", "userProfile-media");
-    const mediaBlock = createElementWithClass("div", "userProfile-media-block");
-    const userMediaContainer = createElementWithClass(
+    const userMedia = createElement().createElementWithClass(
+        "div",
+        "userProfile-media"
+    );
+    const mediaBlock = createElement().createElementWithClass(
+        "div",
+        "userProfile-media-block"
+    );
+    const userMediaContainer = createElement().createElementWithClass(
         "div",
         "userProfile-media-container"
     );
 
-    const userMediaTitle = createElementWithClass(
+    const userMediaTitle = createElement().createElementWithClass(
         "h2",
         "userProfile-media-title"
     );
-    const userMediaLikes = createElementWithClass(
+    const userMediaLikes = createElement().createElementWithClass(
         "span",
         "userProfile-media-likes"
     );
@@ -214,12 +229,17 @@ function createMediaElement(element, photographerName, media, index) {
 
     return userMedia;
 }
-
 // Fonction pour créer la section principale avec les médias
 function createMainSection(data) {
     const { media, name } = data;
-    const main = createElementWithClass("div", "userProfile-main");
-    const wrapperMedia = createElementWithClass("div", "userProfile-wrapper");
+    const main = createElement().createElementWithClass(
+        "div",
+        "userProfile-main"
+    );
+    const wrapperMedia = createElement().createElementWithClass(
+        "div",
+        "userProfile-wrapper"
+    );
     media.forEach((element, index) => {
         const mediaElement = createMediaElement(element, name, media, index);
 
@@ -227,6 +247,15 @@ function createMainSection(data) {
     });
 
     main.appendChild(wrapperMedia);
+
+    // Observer les modifications du DOM
+    const observer = new MutationObserver(() => {
+        filter(data).createFilter(data);
+        observer.disconnect(); // Arrêter l'observation après la première exécution
+    });
+
+    observer.observe(document.body, { childList: true, subtree: true });
+
     return main;
 }
 
@@ -235,7 +264,11 @@ const checkedTypeElementPopup = (source, alt, lightboxContainer) => {
     const isVideo = source.includes("mp4");
 
     if (isVideo) {
-        lightboxElement = createVideo(source, alt, "lightbox-video");
+        lightboxElement = createElement().createVideo(
+            "lightbox-video",
+            source,
+            alt
+        );
 
         lightboxElement.setAttribute("controls", "controls");
         lightboxElement.setAttribute("autoplay", ""); // Ajoutez autoplay
@@ -245,7 +278,11 @@ const checkedTypeElementPopup = (source, alt, lightboxContainer) => {
             .play()
             .catch((e) => console.error("Erreur de lecture de la vidéo: ", e)); // Gestion d'erreur
     } else {
-        lightboxElement = createImage(source, alt, "lightbox-image");
+        lightboxElement = createElement().createImage(
+            "lightbox-image",
+            source,
+            alt
+        );
     }
     lightboxContainer.appendChild(lightboxElement);
     return lightboxElement;
@@ -253,7 +290,10 @@ const checkedTypeElementPopup = (source, alt, lightboxContainer) => {
 
 function photographerTemplate(data) {
     function getUserProfileDOM() {
-        const userProfile = createElementWithClass("div", "userProfile");
+        const userProfile = createElement().createElementWithClass(
+            "div",
+            "userProfile"
+        );
         userProfile.appendChild(createProfileHeader(data));
         userProfile.appendChild(createMainSection(data));
         return userProfile;
