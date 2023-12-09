@@ -31,15 +31,20 @@
             </a>
         </header>
         <main id="main"></main>
-        <div id="contact_modal">
+        <div id="contact_modal" role="dialog" aria-labelledby="modalTitle">
             <div class="modal">
                 <div class="modal-info">
-                    <h2>Contactez-moi</h2>
-                    <img
-                        src="assets/icons/close.svg"
+                    <h2 id="modalTitle">Contactez-moi</h2>
+                    <button
                         onclick="closeModal()"
                         class="modal-close"
-                    />
+                        aria-label="Close Contact form"
+                    >
+                        <img
+                            src="assets/icons/close.svg"
+                            alt="Icône de fermeture"
+                        />
+                    </button>
                 </div>
                 <form>
                     <div class="form-container">
@@ -69,7 +74,7 @@
                             required
                         ></textarea>
                     </div>
-                    <button type="submit" class="modal-button" id="submit">
+                    <button type="submit" class="modal-button" id="submit" aria-label="Send">
                         Envoyer
                     </button>
                 </form>

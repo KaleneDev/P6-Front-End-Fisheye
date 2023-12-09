@@ -17,7 +17,7 @@ const checkedTypeElement = (media, photographerName) => {
                 "src",
                 `assets/photographers/${photographerName}/${media.image}`
             );
-            userMediaImage.setAttribute("alt", media.title);
+            userMediaImage.setAttribute("alt", media.title + ", closeup view");
 
             return userMediaImage;
         } else if (media.video) {
@@ -30,7 +30,7 @@ const checkedTypeElement = (media, photographerName) => {
                 "src",
                 `assets/photographers/${photographerName}/${media.video}`
             );
-            userMediaVideo.setAttribute("alt", media.title);
+            userMediaVideo.setAttribute("alt", media.title + ", closeup view");
             return userMediaVideo;
         }
     }
@@ -79,7 +79,7 @@ const createElement = () => {
     function createVideo(calssVideo, src, alt) {
         const video = checkedTypeClass(calssVideo, "video");
         video.src = src;
-        video.alt = alt;
+        video.setAttribute("aria-label", alt);
         return video;
     }
 

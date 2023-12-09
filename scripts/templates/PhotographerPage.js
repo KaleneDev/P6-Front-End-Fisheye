@@ -72,6 +72,7 @@ function displayLightbox(source, alt, array, index, photographerName) {
         "div",
         "lightbox-container"
     );
+    lightboxContainer.setAttribute("aria-label", "image closeup view");
     lightboxContainer.addEventListener("click", (event) => {
         event.stopPropagation(); // Empêche la fermeture lorsque l'on clique sur l'image/contenu de la lightbox
     });
@@ -81,7 +82,7 @@ function displayLightbox(source, alt, array, index, photographerName) {
         "button",
         "lightbox-close"
     );
-    lightboxClose.innerHTML = '<i class="fa-solid fa-xmark"></i>';
+    lightboxClose.innerHTML = '<i class="fa-solid fa-xmark" aria-label="Close dialog"></i>';
 
     lightboxClose.addEventListener("click", () => {
         lightboxBackground.remove(); // Cela fermera la lightbox lorsqu'on clique sur le bouton de fermeture
@@ -105,6 +106,7 @@ function displayLightbox(source, alt, array, index, photographerName) {
         "button",
         "lightbox-prev"
     );
+    prevButton.setAttribute("aria-label", "Previous image");
     prevButton.textContent = "<"; // ou utilisez une icône
     prevButton.onclick = () => navigateLightbox(-1);
 
@@ -112,6 +114,7 @@ function displayLightbox(source, alt, array, index, photographerName) {
         "button",
         "lightbox-next"
     );
+    nextButton.setAttribute("aria-label", "Next image");
     nextButton.textContent = ">"; // ou utilisez une icône
     nextButton.onclick = () => navigateLightbox(1);
 
@@ -165,7 +168,6 @@ function displayLightbox(source, alt, array, index, photographerName) {
 
     checkedTypeElementPopup(source, alt, lightboxContainer);
     lightboxContainer.appendChild(lightboxTitle);
-
 }
 
 // Fonction pour créer un élément média
@@ -196,7 +198,7 @@ function createMediaElement(element, photographerName, media, index) {
     userMediaTitle.textContent = element.title;
     userMediaLikes.textContent = `${element.likes}`;
     userMediaLikes.innerHTML =
-        element.likes + '<i class="fa-solid fa-heart"></i>';
+        element.likes + '<i class="fa-solid fa-heart" aria-label="likes"></i>';
 
     const mediaChecked = checkedTypeElement(element, photographerName);
 
