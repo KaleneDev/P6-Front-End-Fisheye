@@ -192,7 +192,7 @@ $prefix: ".userProfile"
                 max-width: 400px
                 padding: 1rem 2rem
                 position: fixed
-                right: 2rem
+                right: 0
                 bottom: 0
                 background-color: $color-secondary    
                 border-top-right-radius: 5px
@@ -305,9 +305,12 @@ $prefix: ".userProfile"
     #{$prefix}
         max-width: calc( 1440px + 5vw )
         gap: 2vw
-        .userProfile-wrapper
-            gap: max(5vw, 20px)
-            row-gap: 1.5rem
+        .userProfile
+            &-wrapper
+                gap: max(5vw, 20px)
+                row-gap: 1.5rem
+            &-likesPrice
+                right: 2rem
         &-header
             flex-direction: row
             align-items: center
