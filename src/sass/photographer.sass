@@ -49,12 +49,15 @@ $prefix: ".userProfile"
             font-weight: bold
             color: white
             padding: 11px
-
             border: none
             background-color: #901C1C
             border-radius: 5px
             cursor: pointer
             order: 3
+            &:hover
+                background-color: $color-tertiary
+                color: $color-text-dark
+                
 
         & .profile-name
             color: $color-tertiary
@@ -118,7 +121,7 @@ $prefix: ".userProfile"
                     font-weight: 700
                     border-radius: 5px
                     &:hover
-                        background-color: $color-secondary
+                        background-color: $color-tertiary
 
         .userProfile
             &-wrapper

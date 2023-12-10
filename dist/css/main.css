@@ -54,6 +54,10 @@
   cursor: pointer;
   order: 3;
 }
+.userProfile-header .profile-contact:hover {
+  background-color: #DB8876;
+  color: #000000;
+}
 .userProfile-header .profile-name {
   color: #DB8876;
   font-size: 32px;
@@ -125,7 +129,7 @@
   border-radius: 5px;
 }
 .userProfile-main .listbox-container #listbox #option:hover {
-  background-color: #D3573C;
+  background-color: #DB8876;
 }
 .userProfile-main .userProfile-wrapper {
   display: grid;
