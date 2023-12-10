@@ -42,7 +42,6 @@ function createProfileHeader(data) {
 
     return header;
 }
-
 function createImageContainer(data) {
     const { name, portrait } = data;
     const picture = `assets/Photographers_ID_Photos/${portrait}`;
@@ -55,7 +54,39 @@ function createImageContainer(data) {
     imageContainer.appendChild(image);
     return imageContainer;
 }
+// Fonction pour créer la section principale avec les médias
+function createMainSection(data) {
+    const { media, name } = data;
+    const main = createElement().createElementWithClass(
+        "div",
+        "userProfile-main"
+    );
+    const wrapperMedia = createElement().createElementWithClass(
+        "div",
+        "userProfile-wrapper"
+    );
+    media.forEach((element, index) => {
+        const mediaElement = createMediaElement(element, name, media, index);
 
+        wrapperMedia.appendChild(mediaElement);
+    });
+
+    main.appendChild(wrapperMedia);
+
+    // Observer les modifications du DOM
+    const observer = new MutationObserver(() => {
+        filter(data).createFilter(data);
+        observer.disconnect(); // Arrêter l'observation après la première exécution
+    });
+
+    observer.observe(document.body, { childList: true, subtree: true });
+
+    const likesPrice = createLikesPrice(data);
+
+    main.appendChild(likesPrice);
+
+    return main;
+}
 // Fonction pour créer et afficher une lightbox
 function displayLightbox(source, alt, array, index, photographerName) {
     // Créer l'élément de fond de la lightbox
@@ -82,7 +113,8 @@ function displayLightbox(source, alt, array, index, photographerName) {
         "button",
         "lightbox-close"
     );
-    lightboxClose.innerHTML = '<i class="fa-solid fa-xmark" aria-label="Close dialog"></i>';
+    lightboxClose.innerHTML =
+        '<i class="fa-solid fa-xmark" aria-label="Close dialog"></i>';
 
     lightboxClose.addEventListener("click", () => {
         lightboxBackground.remove(); // Cela fermera la lightbox lorsqu'on clique sur le bouton de fermeture
@@ -169,7 +201,6 @@ function displayLightbox(source, alt, array, index, photographerName) {
     checkedTypeElementPopup(source, alt, lightboxContainer);
     lightboxContainer.appendChild(lightboxTitle);
 }
-
 // Fonction pour créer un élément média
 function createMediaElement(element, photographerName, media, index) {
     // if element is video or image
@@ -195,15 +226,31 @@ function createMediaElement(element, photographerName, media, index) {
         "span",
         "userProfile-media-likes"
     );
+    const likesPriceLikes = document.querySelector(
+        ".userProfile-likesPrice-likes"
+    );
+    element.isLiked = false;
+
     userMediaTitle.textContent = element.title;
     userMediaLikes.textContent = `${element.likes}`;
     userMediaLikes.innerHTML =
         element.likes + '<i class="fa-solid fa-heart" aria-label="likes"></i>';
 
+    userMediaLikes.addEventListener("click", () => {
+        if (!element.isLiked) {
+            element.likes += 1;
+            userMediaLikes.innerHTML =
+                element.likes +
+                '<i class="fa-solid fa-heart" aria-label="likes"></i>';
+            element.isLiked = true;
+            updateTotalLikes(media, likesPriceLikes);
+        }
+    });
+
     const mediaChecked = checkedTypeElement(element, photographerName);
 
     // if mediaChecked is video
-    userMedia.addEventListener("click", (e) => {
+    userMediaContainer.addEventListener("click", (e) => {
         e.stopPropagation();
         displayLightbox(
             mediaChecked.getDom().src,
@@ -231,36 +278,6 @@ function createMediaElement(element, photographerName, media, index) {
 
     return userMedia;
 }
-// Fonction pour créer la section principale avec les médias
-function createMainSection(data) {
-    const { media, name } = data;
-    const main = createElement().createElementWithClass(
-        "div",
-        "userProfile-main"
-    );
-    const wrapperMedia = createElement().createElementWithClass(
-        "div",
-        "userProfile-wrapper"
-    );
-    media.forEach((element, index) => {
-        const mediaElement = createMediaElement(element, name, media, index);
-
-        wrapperMedia.appendChild(mediaElement);
-    });
-
-    main.appendChild(wrapperMedia);
-
-    // Observer les modifications du DOM
-    const observer = new MutationObserver(() => {
-        filter(data).createFilter(data);
-        observer.disconnect(); // Arrêter l'observation après la première exécution
-    });
-
-    observer.observe(document.body, { childList: true, subtree: true });
-
-    return main;
-}
-
 const checkedTypeElementPopup = (source, alt, lightboxContainer) => {
     let lightboxElement;
     const isVideo = source.includes("mp4");
@@ -288,6 +305,38 @@ const checkedTypeElementPopup = (source, alt, lightboxContainer) => {
     }
     lightboxContainer.appendChild(lightboxElement);
     return lightboxElement;
+};
+
+// Fonction pour créer un élément likes/price
+const createLikesPrice = (data) => {
+    const likesPrice = createElement().createElementWithClass(
+        "div",
+        "userProfile-likesPrice"
+    );
+    const likesPriceLikes = createElement().createElementWithClass(
+        "span",
+        "userProfile-likesPrice-likes"
+    );
+    const likesPricePrice = createElement().createElementWithClass(
+        "span",
+        "userProfile-likesPrice-price"
+    );
+    // const likes = data.media.reduce((acc, curr) => acc + curr.likes, 0);
+
+    // likesPriceLikes.innerHTML =
+    //     likes + '<i class="fa-solid fa-heart" aria-label="likes"></i>';
+    updateTotalLikes(data.media, likesPriceLikes);
+    likesPricePrice.textContent = `${data.price}€/jour`;
+
+    likesPrice.appendChild(likesPriceLikes);
+    likesPrice.appendChild(likesPricePrice);
+    return likesPrice;
+};
+// Fonction pour mettre à jour le total des likes
+const updateTotalLikes = (data, likesPriceLikes) => {
+    const totalLikes = data.reduce((acc, curr) => acc + curr.likes, 0);
+    likesPriceLikes.innerHTML =
+        totalLikes + '<i class="fa-solid fa-heart" aria-label="likes"></i>';
 };
 
 function photographerTemplate(data) {

@@ -12,7 +12,6 @@ function displayModal(data) {
             "h2",
             ".modal-name"
         );
-        console.log(element);
         element.textContent = data.name;
         modalInfo.appendChild(element);
     }
@@ -53,7 +52,7 @@ function checkForm() {
         const input = document.getElementById(id);
         let error = input.nextSibling;
         if (!error || error.className !== "error") {
-            error = createElement("p", "", "error").createElementWithClass();
+            error = createElement().createElementWithClass("p", "error");
             input.parentNode.insertBefore(error, input.nextSibling);
         }
 

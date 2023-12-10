@@ -120,18 +120,17 @@ $prefix: ".userProfile"
                     &:hover
                         background-color: $color-secondary
 
-        .userProfile-wrapper
-            display: grid
-            gap: 2rem
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr))
-            height: 100%
-            width: 100%
-            align-items: center
-            justify-content: space-between
-            margin-top: 5rem
-            .userProfile
-
-                &-media
+        .userProfile
+            &-wrapper
+                display: grid
+                gap: 2rem
+                grid-template-columns: repeat(auto-fit, minmax(320px, 1fr))
+                height: 100%
+                width: 100%
+                align-items: center
+                justify-content: space-between
+                margin-top: 5rem
+            &-media
                     display: flex
                     flex-direction: column
                     width: 100%
@@ -163,6 +162,7 @@ $prefix: ".userProfile"
                         color: $color-primary
                         font-weight: 500
                         font-size: 24px
+                        cursor: pointer
                         i
                             margin-left: 0.5rem
                             font-size: 1.5rem
@@ -185,7 +185,31 @@ $prefix: ".userProfile"
                         object-fit: cover
                         border-radius: 5px
                         cursor: pointer
-
+            &-likesPrice
+                display: flex
+                justify-content: space-between
+                width: 100%
+                max-width: 400px
+                padding: 1rem 2rem
+                position: fixed
+                right: 2rem
+                bottom: 0
+                background-color: $color-secondary    
+                border-top-right-radius: 5px
+                border-top-left-radius: 5px
+                &-likes
+                    font-weight: 500
+                    font-size: 24px
+                    i
+                        margin-left: 0.5rem
+                        font-size: 1.5rem    
+                &-price
+                    font-weight: 500
+                    font-size: 24px
+                    letter-spacing: 2px
+                    i
+                        margin-left: 0.5rem
+                        font-size: 1.5rem
 // lightbox
 .lightbox
     &-background
