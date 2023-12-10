@@ -385,10 +385,11 @@ header {
   height: 90px;
   max-width: calc(1440px + 5vw);
   margin: auto;
-  padding: 0 5vw;
+  padding: 0 6vw;
+  margin-top: 2rem;
 }
 header a img {
-  width: 100px;
+  width: 200px;
 }
 
 main {
@@ -400,7 +401,8 @@ main {
 
 h1 {
   color: #901C1C;
-  margin-right: 100px;
+  font-size: 36px;
+  font-weight: 400;
 }
 
 .log {
@@ -410,7 +412,7 @@ h1 {
 
 .photographer_section {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
   width: 100%;
   gap: 70px;
   margin-top: 100px;
