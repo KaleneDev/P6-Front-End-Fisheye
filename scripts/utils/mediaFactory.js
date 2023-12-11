@@ -6,6 +6,9 @@ const checkedTypeElement = (media, photographerName) => {
         }
         return false;
     }
+    function replaceSpaceByUnderscore(string) {
+        return string.replace(" ", "_");
+    }
     function getDom() {
         if (media.image) {
             const userMediaImage = createElement().createImage(
@@ -15,7 +18,7 @@ const checkedTypeElement = (media, photographerName) => {
             );
             userMediaImage.setAttribute(
                 "src",
-                `assets/photographers/${photographerName}/${media.image}`
+                `assets/photographers/${replaceSpaceByUnderscore(photographerName)}/${media.image}`
             );
             userMediaImage.setAttribute("alt", media.title + ", closeup view");
 
@@ -23,14 +26,12 @@ const checkedTypeElement = (media, photographerName) => {
         } else if (media.video) {
             const userMediaVideo = createElement().createVideo(
                 "userProfile-media-video",
-                media.video,
-                media.title
+                media.video
             );
             userMediaVideo.setAttribute(
                 "src",
-                `assets/photographers/${photographerName}/${media.video}`
+                `assets/photographers/${replaceSpaceByUnderscore(photographerName)}/${media.video}`
             );
-            userMediaVideo.setAttribute("alt", media.title + ", closeup view");
             return userMediaVideo;
         }
     }
@@ -76,10 +77,9 @@ const createElement = () => {
         img.alt = alt;
         return img;
     }
-    function createVideo(calssVideo, src, alt) {
+    function createVideo(calssVideo, src) {
         const video = checkedTypeClass(calssVideo, "video");
         video.src = src;
-        video.setAttribute("aria-label", alt);
         return video;
     }
 

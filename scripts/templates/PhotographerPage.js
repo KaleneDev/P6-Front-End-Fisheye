@@ -72,7 +72,6 @@ function createMainSection(data) {
     });
 
     main.appendChild(wrapperMedia);
-
     // Observer les modifications du DOM
     const observer = new MutationObserver(() => {
         filter(data).createFilter(data);
@@ -89,6 +88,8 @@ function createMainSection(data) {
 }
 // Fonction pour créer et afficher une lightbox
 function displayLightbox(source, alt, array, index, photographerName) {
+    // console.log(filter(data).getFilteredArray());
+
     // Créer l'élément de fond de la lightbox
     const lightboxBackground = createElement().createElementWithClass(
         "div",
@@ -154,6 +155,7 @@ function displayLightbox(source, alt, array, index, photographerName) {
     lightboxContainer.appendChild(nextButton);
 
     let currentImageIndex = index;
+
     function navigateLightbox(direction) {
         currentImageIndex += direction;
         // Gérer les limites
@@ -162,7 +164,6 @@ function displayLightbox(source, alt, array, index, photographerName) {
         } else if (currentImageIndex >= array.length) {
             currentImageIndex = 0;
         }
-
         const newMediaSrc =
             array[currentImageIndex].image || array[currentImageIndex].video;
         const newMediaAlt = array[currentImageIndex].title;
@@ -184,10 +185,11 @@ function displayLightbox(source, alt, array, index, photographerName) {
             newMediaElement.classList.add("lightbox-video");
             newMediaElement.setAttribute("controls", "controls");
         }
-        console.log(photographerName);
+
         newMediaElement.setAttribute(
             "src",
-            `assets/photographers/${photographerName}/` + newMediaSrc
+            `assets/photographers/${photographerName.replace(" ", "_")}/` +
+                newMediaSrc
         );
         newMediaElement.setAttribute("alt", newMediaAlt);
         // Remplacer l'ancien élément média par le nouveau
@@ -283,11 +285,7 @@ const checkedTypeElementPopup = (source, alt, lightboxContainer) => {
     const isVideo = source.includes("mp4");
 
     if (isVideo) {
-        lightboxElement = createElement().createVideo(
-            "lightbox-video",
-            source,
-            alt
-        );
+        lightboxElement = createElement().createVideo("lightbox-video", source);
 
         lightboxElement.setAttribute("controls", "controls");
         lightboxElement.setAttribute("autoplay", ""); // Ajoutez autoplay
@@ -341,6 +339,7 @@ const updateTotalLikes = (data, likesPriceLikes) => {
 
 function photographerTemplate(data) {
     function getUserProfileDOM() {
+        data = data;
         const userProfile = createElement().createElementWithClass(
             "div",
             "userProfile"

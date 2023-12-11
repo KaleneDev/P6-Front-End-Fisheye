@@ -1,4 +1,5 @@
 function filter(data) {
+    let currentFilteredArray = [];
     function createFilter() {
         const listboxContainer = createListBoxContainer();
         const filterButton = createFilterButton(listboxContainer);
@@ -87,11 +88,13 @@ function filter(data) {
         options.forEach((option) => {
             const optionElement = createElement().createElementWithClass(
                 "div",
-                "#option"
+                ".option"
             );
             optionElement.setAttribute("role", "option");
             optionElement.setAttribute("tabindex", "0");
-            optionElement.textContent = option;
+            optionElement.setAttribute("aria-labelledby", option);
+            optionElement.innerHTML =
+                '<label id="' + option + '">' + option + "</label>";
 
             // Création de l'icône FontAwesome
             const icon = document.createElement("i");
@@ -194,9 +197,14 @@ function filter(data) {
             default:
                 filteredMedia = [...mediaArray];
         }
-
         updateMediaDisplay(filteredMedia);
+        currentFilteredArray = filteredMedia;
     }
+
+    function getFilteredArray() {
+        return currentFilteredArray; // Renvoie le tableau filtré courant
+    }
+
     function updateMediaDisplay(filteredMedia) {
         const wrapperMedia = document.querySelector(".userProfile-wrapper");
         wrapperMedia.innerHTML = "";
@@ -213,5 +221,6 @@ function filter(data) {
 
     return {
         createFilter,
+        getFilteredArray,
     };
 }

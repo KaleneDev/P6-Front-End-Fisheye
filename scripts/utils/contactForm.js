@@ -1,19 +1,11 @@
 function displayModal(data) {
     const modal = document.getElementById("contact_modal");
-    const modalParent = document.querySelector(".modal");
-    const modalInfo = document.querySelector(".modal-info");
-
-    modalParent.setAttribute("aria-labelledby", `Contact me ${data.name}`);
     modal.style.display = "block";
-    let element = modalInfo.querySelector(".modal-name");
 
-    if (!element) {
-        const element = createElement().createElementWithClass(
-            "h2",
-            ".modal-name"
-        );
-        element.textContent = data.name;
-        modalInfo.appendChild(element);
+    const modalTitle = document.getElementById("modalTitle");
+    // si modalTitle contain data.name, add a line break
+    if (!modalTitle.innerHTML.includes(data.name)) {
+        modalTitle.innerHTML += "</br>" + data.name;
     }
 
     const submitButton = document.getElementById("submit");

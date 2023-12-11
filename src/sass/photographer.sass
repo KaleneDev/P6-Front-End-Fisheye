@@ -110,7 +110,8 @@ $prefix: ".userProfile"
                 &:not(.open)
                     & > :not(.active)
                         display: none !important
-                #option
+                .option
+                    position: relative
                     display: flex
                     align-items: center
                     gap: 1rem
@@ -122,6 +123,24 @@ $prefix: ".userProfile"
                     border-radius: 5px
                     &:hover
                         background-color: $color-tertiary
+                    &:nth-child(2)::before
+                        position: relative
+                        content: ''
+                        width: 100%
+                        height: 1px
+                        background-color: $color-text-light
+                    &:nth-child(2)::before, &:nth-child(2)::after
+                        position: absolute
+                        content: ''
+                        width: 80%
+                        height: 1px
+                        background-color: $color-text-light
+                        left: 50%
+                        transform: translateX(-50%)
+                    &:nth-child(2)::before
+                        top: 0
+                    &:nth-child(2)::after
+                        bottom: 0
 
         .userProfile
             &-wrapper
@@ -156,7 +175,7 @@ $prefix: ".userProfile"
                                 cursor: pointer
                     &-block
                         display: flex
-                        align-items: center
+                        align-items: flex-start
                         justify-content: space-between
                         margin-top: 1rem
                     &-likes
