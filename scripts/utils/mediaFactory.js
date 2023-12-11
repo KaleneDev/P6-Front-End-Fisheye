@@ -1,3 +1,5 @@
+const normalizeNameFolder = (str) => str.replace(' ', '_');
+
 // if element is video or photo
 const checkedTypeElement = (media, photographerName) => {
     function isVideo() {
@@ -15,7 +17,7 @@ const checkedTypeElement = (media, photographerName) => {
             );
             userMediaImage.setAttribute(
                 "src",
-                `assets/photographers/${photographerName}/${media.image}`
+                `assets/photographers/${normalizeNameFolder(photographerName)}/${media.image}`
             );
             userMediaImage.setAttribute("alt", media.title + ", closeup view");
 
@@ -28,9 +30,9 @@ const checkedTypeElement = (media, photographerName) => {
             );
             userMediaVideo.setAttribute(
                 "src",
-                `assets/photographers/${photographerName}/${media.video}`
+                `assets/photographers/${normalizeNameFolder(photographerName)}/${media.video}`
             );
-            userMediaVideo.setAttribute("alt", media.title + ", closeup view");
+            
             return userMediaVideo;
         }
     }
