@@ -117,7 +117,7 @@
 .userProfile-main .listbox-container #listbox:not(.open) > :not(.active) {
   display: none !important;
 }
-.userProfile-main .listbox-container #listbox #option {
+.userProfile-main .listbox-container #listbox .option {
   display: flex;
   align-items: center;
   gap: 1rem;
@@ -128,7 +128,7 @@
   font-weight: 700;
   border-radius: 5px;
 }
-.userProfile-main .listbox-container #listbox #option:hover {
+.userProfile-main .listbox-container #listbox .option:hover {
   background-color: #DB8876;
 }
 .userProfile-main .userProfile-wrapper {

@@ -87,11 +87,12 @@ function filter(data) {
         options.forEach((option) => {
             const optionElement = createElement().createElementWithClass(
                 "div",
-                "#option"
+                "option"
             );
             optionElement.setAttribute("role", "option");
             optionElement.setAttribute("tabindex", "0");
-            optionElement.textContent = option;
+            optionElement.setAttribute('aria-labelledby', option)
+            optionElement.innerHTML =  '<label id="' + option + '">' + option + '</label>';
 
             // Création de l'icône FontAwesome
             const icon = document.createElement("i");
