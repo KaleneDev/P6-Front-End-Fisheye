@@ -1,3 +1,5 @@
+// import { createFilter, applyFilter } from "../utils/filter.js";
+
 function createProfileHeader(data) {
     const { name, city, country, tagline } = data;
     const header = createElement().createElementWithClass(
@@ -56,7 +58,6 @@ function createImageContainer(data) {
 }
 // Fonction pour créer la section principale avec les médias
 function createMainSection(data) {
-    const { media, name } = data;
     const main = createElement().createElementWithClass(
         "div",
         "userProfile-main"
@@ -65,29 +66,26 @@ function createMainSection(data) {
         "div",
         "userProfile-wrapper"
     );
-    media.forEach((element, index) => {
-        const mediaElement = createMediaElement(element, name, media, index);
+
+    data.media.forEach((element, index) => {
+        const mediaElement = createMediaElement(element, index, data);
 
         wrapperMedia.appendChild(mediaElement);
     });
-
     main.appendChild(wrapperMedia);
     // Observer les modifications du DOM
-    const observer = new MutationObserver(() => {
-        filter(data).createFilter(data);
-        observer.disconnect(); // Arrêter l'observation après la première exécution
-    });
-
-    observer.observe(document.body, { childList: true, subtree: true });
 
     const likesPrice = createLikesPrice(data);
 
     main.appendChild(likesPrice);
+    if (main) {
+        createFilter(data, main, wrapperMedia);
+    }
 
     return main;
 }
 // Fonction pour créer et afficher une lightbox
-function displayLightbox(source, alt, array, index, photographerName) {
+function displayLightbox(data, source, alt, index) {
     // console.log(filter(data).getFilteredArray());
 
     // Créer l'élément de fond de la lightbox
@@ -153,20 +151,21 @@ function displayLightbox(source, alt, array, index, photographerName) {
 
     lightboxContainer.appendChild(prevButton);
     lightboxContainer.appendChild(nextButton);
+    // get localstorage media and convert to array
+    const media = JSON.parse(localStorage.getItem("media")) || [];
 
     let currentImageIndex = index;
-
     function navigateLightbox(direction) {
         currentImageIndex += direction;
         // Gérer les limites
         if (currentImageIndex < 0) {
-            currentImageIndex = array.length - 1;
-        } else if (currentImageIndex >= array.length) {
+            currentImageIndex = media.length - 1;
+        } else if (currentImageIndex >= media.length) {
             currentImageIndex = 0;
         }
         const newMediaSrc =
-            array[currentImageIndex].image || array[currentImageIndex].video;
-        const newMediaAlt = array[currentImageIndex].title;
+            media[currentImageIndex].image || media[currentImageIndex].video;
+        const newMediaAlt = media[currentImageIndex].title;
 
         // Assurez-vous d'avoir un conteneur pour les médias
         const lightboxTitle = document.querySelector(".lightbox-title");
@@ -177,10 +176,10 @@ function displayLightbox(source, alt, array, index, photographerName) {
 
         let newMediaElement;
 
-        if (array[currentImageIndex].image) {
+        if (media[currentImageIndex].image) {
             newMediaElement = document.createElement("img");
             newMediaElement.classList.add("lightbox-image");
-        } else if (array[currentImageIndex].video) {
+        } else if (media[currentImageIndex].video) {
             newMediaElement = document.createElement("video");
             newMediaElement.classList.add("lightbox-video");
             newMediaElement.setAttribute("controls", "controls");
@@ -188,8 +187,7 @@ function displayLightbox(source, alt, array, index, photographerName) {
 
         newMediaElement.setAttribute(
             "src",
-            `assets/photographers/${photographerName.replace(" ", "_")}/` +
-                newMediaSrc
+            `assets/photographers/${data.name.replace(" ", "_")}/` + newMediaSrc
         );
         newMediaElement.setAttribute("alt", newMediaAlt);
         // Remplacer l'ancien élément média par le nouveau
@@ -204,7 +202,7 @@ function displayLightbox(source, alt, array, index, photographerName) {
     lightboxContainer.appendChild(lightboxTitle);
 }
 // Fonction pour créer un élément média
-function createMediaElement(element, photographerName, media, index) {
+function createMediaElement(element, index, data) {
     // if element is video or image
 
     const userMedia = createElement().createElementWithClass(
@@ -228,16 +226,13 @@ function createMediaElement(element, photographerName, media, index) {
         "span",
         "userProfile-media-likes"
     );
-    const likesPriceLikes = document.querySelector(
-        ".userProfile-likesPrice-likes"
-    );
+
     element.isLiked = false;
 
     userMediaTitle.textContent = element.title;
     userMediaLikes.textContent = `${element.likes}`;
     userMediaLikes.innerHTML =
         element.likes + '<i class="fa-solid fa-heart" aria-label="likes"></i>';
-
     userMediaLikes.addEventListener("click", () => {
         if (!element.isLiked) {
             element.likes += 1;
@@ -245,23 +240,20 @@ function createMediaElement(element, photographerName, media, index) {
                 element.likes +
                 '<i class="fa-solid fa-heart" aria-label="likes"></i>';
             element.isLiked = true;
-            updateTotalLikes(media, likesPriceLikes);
+            const likesPriceLikes = document.querySelector(
+                ".userProfile-likesPrice-likes"
+            );
+            updateTotalLikes(data.media, likesPriceLikes);
         }
     });
-
-    const mediaChecked = checkedTypeElement(element, photographerName);
+    const mediaChecked = checkedTypeElement(element, data.name);
 
     // if mediaChecked is video
     userMediaContainer.addEventListener("click", (e) => {
         e.stopPropagation();
-        displayLightbox(
-            mediaChecked.getDom().src,
-            element.title,
-            media,
-            index,
-            photographerName
-        );
+        displayLightbox(data, mediaChecked.getDom().src, element.title, index);
     });
+
     if (!mediaChecked.isVideo()) {
         userMediaContainer.classList.add("image");
     } else {
@@ -339,13 +331,15 @@ const updateTotalLikes = (data, likesPriceLikes) => {
 
 function photographerTemplate(data) {
     function getUserProfileDOM() {
-        data = data;
         const userProfile = createElement().createElementWithClass(
             "div",
             "userProfile"
         );
+
         userProfile.appendChild(createProfileHeader(data));
+
         userProfile.appendChild(createMainSection(data));
+
         return userProfile;
     }
 

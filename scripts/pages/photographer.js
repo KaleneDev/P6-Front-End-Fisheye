@@ -30,9 +30,7 @@ async function getPhotographerById(id) {
 
 // Fonction pour afficher les détails d'un photographe spécifique
 async function displayPhotographerDetail(photographer) {
-    const photographerSection = document.querySelector(
-        "#main"
-    );
+    const photographerSection = document.querySelector("#main");
     const photographerModel = photographerTemplate(photographer);
     const userCardDOM = photographerModel.getUserProfileDOM();
     photographerSection.appendChild(userCardDOM);
