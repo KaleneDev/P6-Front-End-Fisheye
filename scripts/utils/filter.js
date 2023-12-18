@@ -1,3 +1,5 @@
+let filteredMedias = [];
+
 function createFilter(data, userProfileMain, wrapperMedia) {
     const listboxContainer = createListBoxContainer();
     const filterButton = createFilterButton(listboxContainer);
@@ -45,6 +47,8 @@ function createListBox() {
     box.setAttribute("aria-labelledby", "orderByLabel");
     box.setAttribute("aria-expanded", "false");
     box.classList.add("listbox", "close");
+    box.setAttribute("aria-activedescendant", "Popularité");
+
     return box;
 }
 
@@ -96,7 +100,6 @@ function setupFilterOptions(listbox, data, filterButton, wrapperMedia) {
         // Sélection initiale pour "Popularité"
         if (option === "Popularité") {
             optionElement.setAttribute("aria-selected", "true");
-            optionElement.setAttribute("ascending", "true");
 
             optionElement.classList.add("active");
         }
@@ -109,8 +112,9 @@ function setupFilterOptions(listbox, data, filterButton, wrapperMedia) {
         };
         optionElement.addEventListener("click", () => {
             if (listbox.getAttribute("aria-expanded") === "true") {
-                optionElement.setAttribute("ascending", "true");
                 currentSort.option = option;
+                listbox.setAttribute("aria-activedescendant", option);
+
                 if (
                     option === currentSort.option &&
                     optionElement.classList.contains("active")
@@ -184,7 +188,7 @@ function applyFilter(sort, data, wrapperMedia) {
     }
     updateMediaDisplay(filteredMedia, data, wrapperMedia);
     // Ajout localStorage
-    localStorage.setItem("media", JSON.stringify(filteredMedia));
+    filteredMedias = filteredMedia;
     return filteredMedia;
 }
 
@@ -197,4 +201,3 @@ function updateMediaDisplay(filteredMedia, data, wrapperMedia) {
 }
 
 window.createFilter = createFilter;
-

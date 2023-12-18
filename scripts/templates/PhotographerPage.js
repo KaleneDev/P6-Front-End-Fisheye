@@ -1,5 +1,3 @@
-// import { createFilter, applyFilter } from "../utils/filter.js";
-
 function createProfileHeader(data) {
     const { name, city, country, tagline } = data;
     const header = createElement().createElementWithClass(
@@ -152,7 +150,7 @@ function displayLightbox(data, source, alt, index) {
     lightboxContainer.appendChild(prevButton);
     lightboxContainer.appendChild(nextButton);
     // get localstorage media and convert to array
-    const media = JSON.parse(localStorage.getItem("media")) || [];
+    const media = filteredMedias || [];
 
     let currentImageIndex = index;
     function navigateLightbox(direction) {
