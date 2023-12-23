@@ -3,10 +3,13 @@ function displayModal(data) {
     modal.style.display = "block";
 
     const modalTitle = document.getElementById("modalTitle");
+    // ajoute tabindex="-1" à la modalTitle
+    modalTitle.setAttribute("tabindex", "-1");
     // si modalTitle contain data.name, add a line break
     if (!modalTitle.innerHTML.includes(data.name)) {
         modalTitle.innerHTML += "</br>" + data.name;
     }
+    modalTitle.focus();
 
     const submitButton = document.getElementById("submit");
     submitButton.addEventListener("click", (e) => {
@@ -26,9 +29,11 @@ function displayModal(data) {
 // if i submit the form, the modal should close
 
 function closeModal() {
+    const btnContact = document.getElementById("btn-contact");
     const modal = document.getElementById("contact_modal");
     modal.style.display = "none";
     window.removeEventListener("click", closeModal);
+    btnContact.focus();
 }
 
 function checkForm() {

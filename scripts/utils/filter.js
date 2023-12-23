@@ -14,7 +14,7 @@ function createFilter(data, userProfileMain, wrapperMedia) {
 function createListBoxContainer() {
     const container = createElement().createElementWithClass(
         "div",
-        ".listbox-container"
+        "listbox-container"
     );
     const orderByLabel = createElement().createElementWithText(
         "span",
@@ -29,7 +29,7 @@ function createListBoxContainer() {
 function createFilterButton(listboxContainer) {
     const button = createElement().createElementWithClass(
         "button",
-        ".filter-button"
+        "filter-button"
     );
     button.setAttribute("role", "button");
     button.setAttribute("aria-haspopup", "listbox");
@@ -42,7 +42,7 @@ function createFilterButton(listboxContainer) {
 }
 
 function createListBox() {
-    const box = createElement().createElementWithClass("div", "#listbox");
+    const box = createElement().createElementWhithId("div", "listbox");
     box.setAttribute("role", "listbox");
     box.setAttribute("aria-labelledby", "orderByLabel");
     box.setAttribute("aria-expanded", "false");
@@ -71,7 +71,13 @@ function toggleFilter(button, listboxContainer) {
 }
 
 function setupFilterOptions(listbox, data, filterButton, wrapperMedia) {
-    listbox.addEventListener("click", (e) => {
+    // listbox.addEventListener("click", (e) => {
+    //     e.stopPropagation();
+    //     listbox.classList.add("open");
+    //     listbox.classList.remove("close");
+    //     listbox.setAttribute("aria-expanded", "true");
+    // });
+    addClickAndKeydownEvent(listbox, (e) => {
         e.stopPropagation();
         listbox.classList.add("open");
         listbox.classList.remove("close");
@@ -83,7 +89,7 @@ function setupFilterOptions(listbox, data, filterButton, wrapperMedia) {
     options.forEach((option) => {
         const optionElement = createElement().createElementWithClass(
             "div",
-            ".option"
+            "option"
         );
         optionElement.setAttribute("role", "option");
         optionElement.setAttribute("tabindex", "0");
@@ -110,7 +116,7 @@ function setupFilterOptions(listbox, data, filterButton, wrapperMedia) {
                 ? "fa-solid fa-angle-up"
                 : "fa-solid fa-angle-down";
         };
-        optionElement.addEventListener("click", () => {
+        addClickAndKeydownEvent(optionElement, () => {
             if (listbox.getAttribute("aria-expanded") === "true") {
                 currentSort.option = option;
                 listbox.setAttribute("aria-activedescendant", option);

@@ -13,6 +13,7 @@ function createProfileHeader(data) {
         "profile-contact"
     );
     contactButton.setAttribute("id", "btn-contact");
+    contactButton.setAttribute("tabindex", "-1");
 
     profileInfo.appendChild(
         createElement().createElementWithText("h1", "profile-name", name)
@@ -112,9 +113,12 @@ function displayLightbox(data, source, alt, index) {
     );
     lightboxClose.innerHTML =
         '<i class="fa-solid fa-xmark" aria-label="Close dialog"></i>';
-
-    lightboxClose.addEventListener("click", () => {
+    const userProfileMedia = document.querySelector(".userProfile-media");
+    
+    addClickAndKeydownEvent(lightboxClose, () => {
         lightboxBackground.remove(); // Cela fermera la lightbox lorsqu'on clique sur le bouton de fermeture
+        userProfileMedia.setAttribute("tabindex", "-1");
+        userProfileMedia.focus();
     });
     lightboxContainer.appendChild(lightboxClose);
 
@@ -144,11 +148,13 @@ function displayLightbox(data, source, alt, index) {
         "lightbox-next"
     );
     nextButton.setAttribute("aria-label", "Next image");
+    nextButton.setAttribute("tabindex", "-1");
     nextButton.textContent = ">"; // ou utilisez une icône
     nextButton.onclick = () => navigateLightbox(1);
 
     lightboxContainer.appendChild(prevButton);
     lightboxContainer.appendChild(nextButton);
+    nextButton.focus();
     // get localstorage media and convert to array
     const media = filteredMedias || [];
 
@@ -231,7 +237,20 @@ function createMediaElement(element, index, data) {
     userMediaLikes.textContent = `${element.likes}`;
     userMediaLikes.innerHTML =
         element.likes + '<i class="fa-solid fa-heart" aria-label="likes"></i>';
-    userMediaLikes.addEventListener("click", () => {
+    // userMediaLikes.addEventListener("click", () => {
+    //     if (!element.isLiked) {
+    //         element.likes += 1;
+    //         userMediaLikes.innerHTML =
+    //             element.likes +
+    //             '<i class="fa-solid fa-heart" aria-label="likes"></i>';
+    //         element.isLiked = true;
+    //         const likesPriceLikes = document.querySelector(
+    //             ".userProfile-likesPrice-likes"
+    //         );
+    //         updateTotalLikes(data.media, likesPriceLikes);
+    //     }
+    // });
+    addClickAndKeydownEvent(userMediaLikes, () => {
         if (!element.isLiked) {
             element.likes += 1;
             userMediaLikes.innerHTML =
@@ -247,7 +266,15 @@ function createMediaElement(element, index, data) {
     const mediaChecked = checkedTypeElement(element, data.name);
 
     // if mediaChecked is video
-    userMediaContainer.addEventListener("click", (e) => {
+    // userMediaContainer.addEventListener("click", (e) => {
+    //     e.stopPropagation();
+    //     displayLightbox(data, mediaChecked.getDom().src, element.title, index);
+    // });
+    addClickAndKeydownEvent(userMediaContainer, (e) => {
+        e.stopPropagation();
+        displayLightbox(data, mediaChecked.getDom().src, element.title, index);
+    });
+    addClickAndKeydownEvent(userMediaTitle, (e) => {
         e.stopPropagation();
         displayLightbox(data, mediaChecked.getDom().src, element.title, index);
     });

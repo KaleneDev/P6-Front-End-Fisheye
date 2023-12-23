@@ -18,7 +18,9 @@ const checkedTypeElement = (media, photographerName) => {
             );
             userMediaImage.setAttribute(
                 "src",
-                `assets/photographers/${replaceSpaceByUnderscore(photographerName)}/${media.image}`
+                `assets/photographers/${replaceSpaceByUnderscore(
+                    photographerName
+                )}/${media.image}`
             );
             userMediaImage.setAttribute("alt", media.title + ", closeup view");
 
@@ -30,7 +32,9 @@ const checkedTypeElement = (media, photographerName) => {
             );
             userMediaVideo.setAttribute(
                 "src",
-                `assets/photographers/${replaceSpaceByUnderscore(photographerName)}/${media.video}`
+                `assets/photographers/${replaceSpaceByUnderscore(
+                    photographerName
+                )}/${media.video}`
             );
             return userMediaVideo;
         }
@@ -44,41 +48,32 @@ const checkedTypeElement = (media, photographerName) => {
 // Fonction pour créer un élément média
 
 const createElement = () => {
-    function checkedTypeClass(classTypeClass, type) {
+    function createElementWhithId(type, id) {
         const element = document.createElement(type);
-        // console.log(classTypeClass);
-        // if className has # ou .
-        if (classTypeClass.includes("#")) {
-            classTypeClass = classTypeClass.replace("#", "");
-            element.id = classTypeClass;
-            return element;
-        } else if (classTypeClass.includes(".")) {
-            classTypeClass = classTypeClass.replace(".", "");
-            element.classList.add(classTypeClass);
-            return element;
-        } else {
-            element.classList.add(classTypeClass);
-            return element;
-        }
+        element.id = id;
+        return element;
     }
-
     function createElementWithClass(type, className) {
-        const element = checkedTypeClass(className, type);
+        const element = document.createElement(type);
+        element.classList.add(className);
         return element;
     }
     function createElementWithText(type, className, text) {
-        const element = checkedTypeClass(className, type);
+        const element = document.createElement(type);
+        element.classList.add(className);
         element.textContent = text;
         return element;
     }
     function createImage(classImage, src, alt) {
-        const img = checkedTypeClass(classImage, "img");
+        const img = document.createElement("img");
+        img.classList.add(classImage);
         img.src = src;
         img.alt = alt;
         return img;
     }
     function createVideo(calssVideo, src) {
-        const video = checkedTypeClass(calssVideo, "video");
+        const video = document.createElement("video");
+        video.classList.add(calssVideo);
         video.src = src;
         return video;
     }
@@ -88,5 +83,19 @@ const createElement = () => {
         createVideo,
         createElementWithClass,
         createElementWithText,
+        createElementWhithId,
     };
+};
+
+const addClickAndKeydownEvent = (element, callback) => {
+    // Assurez-vous que l'élément est focusable
+    if (!element.hasAttribute("tabindex")) {
+        element.setAttribute("tabindex", "0");
+    }
+    element.addEventListener("click", callback);
+    element.addEventListener("keydown", (event) => {
+        if (event.key === "Enter" || event.key === " ") {
+            callback(event);
+        }
+    });
 };
