@@ -38,7 +38,7 @@ function createProfileHeader(data) {
     contactButton.addEventListener("click", () => displayModal(data));
 
     header.appendChild(profileInfo);
-    ~~header.appendChild(contactButton);
+    header.appendChild(contactButton);
     header.appendChild(createImageContainer(data));
 
     return header;
@@ -155,7 +155,7 @@ function displayLightbox(data, source, alt, index) {
     lightboxContainer.appendChild(prevButton);
     lightboxContainer.appendChild(nextButton);
     nextButton.focus();
-    // get localstorage media and convert to array
+  
     const media = filteredMedias || [];
 
     let currentImageIndex = index;
@@ -265,11 +265,7 @@ function createMediaElement(element, index, data) {
     });
     const mediaChecked = checkedTypeElement(element, data.name);
 
-    // if mediaChecked is video
-    // userMediaContainer.addEventListener("click", (e) => {
-    //     e.stopPropagation();
-    //     displayLightbox(data, mediaChecked.getDom().src, element.title, index);
-    // });
+   
     addClickAndKeydownEvent(userMediaContainer, (e) => {
         e.stopPropagation();
         displayLightbox(data, mediaChecked.getDom().src, element.title, index);

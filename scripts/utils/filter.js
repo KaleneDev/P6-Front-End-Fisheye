@@ -8,7 +8,7 @@ function createFilter(data, userProfileMain, wrapperMedia) {
     listboxContainer.appendChild(listbox);
     userProfileMain.insertBefore(listboxContainer, userProfileMain.firstChild);
     setupFilterOptions(listbox, data, filterButton, wrapperMedia);
-    applyFilter({ option: "Popularité", ascending: true }, data, wrapperMedia);
+    applyFilter({ option: "Popularité", ascending: false }, data, wrapperMedia);
 }
 
 function createListBoxContainer() {
@@ -71,12 +71,7 @@ function toggleFilter(button, listboxContainer) {
 }
 
 function setupFilterOptions(listbox, data, filterButton, wrapperMedia) {
-    // listbox.addEventListener("click", (e) => {
-    //     e.stopPropagation();
-    //     listbox.classList.add("open");
-    //     listbox.classList.remove("close");
-    //     listbox.setAttribute("aria-expanded", "true");
-    // });
+
     addClickAndKeydownEvent(listbox, (e) => {
         e.stopPropagation();
         listbox.classList.add("open");
@@ -84,7 +79,7 @@ function setupFilterOptions(listbox, data, filterButton, wrapperMedia) {
         listbox.setAttribute("aria-expanded", "true");
     });
 
-    let currentSort = { option: "Popularité", ascending: true }; // Tri actuel
+    let currentSort = { option: "Popularité", ascending: false }; // Tri actuel
     const options = ["Popularité", "Date", "Titre"];
     options.forEach((option) => {
         const optionElement = createElement().createElementWithClass(
@@ -128,7 +123,7 @@ function setupFilterOptions(listbox, data, filterButton, wrapperMedia) {
                     currentSort.ascending = !currentSort.ascending;
                     filterActive();
                 } else {
-                    currentSort = { option, ascending: true };
+                    currentSort = { option, ascending: false };
                     filterActive();
                 }
 
@@ -170,23 +165,23 @@ function applyFilter(sort, data, wrapperMedia) {
     switch (sort.option) {
         case "Popularité":
             filteredMedia = sort.ascending
-                ? [...data.media].sort((b, a) => a.likes - b.likes)
-                : [...data.media].sort((b, a) => b.likes - a.likes);
+                ? [...data.media].sort((b, a) => b.likes - a.likes)
+                : [...data.media].sort((b, a) => a.likes - b.likes);
             break;
         case "Date":
             filteredMedia = sort.ascending
                 ? [...data.media].sort(
-                      (b, a) => new Date(a.date) - new Date(b.date)
+                      (b, a) => new Date(b.date) - new Date(a.date)
                   )
                 : [...data.media].sort(
-                      (b, a) => new Date(b.date) - new Date(a.date)
+                      (b, a) => new Date(a.date) - new Date(b.date)
                   );
             break;
         case "Titre":
             filteredMedia = sort.ascending
-                ? [...data.media].sort((a, b) => a.title.localeCompare(b.title))
+                ? [...data.media].sort((a, b) => b.title.localeCompare(a.title))
                 : [...data.media].sort((a, b) =>
-                      b.title.localeCompare(a.title)
+                      a.title.localeCompare(b.title)
                   );
             break;
         default:

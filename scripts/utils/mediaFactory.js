@@ -23,7 +23,6 @@ const checkedTypeElement = (media, photographerName) => {
                 )}/${media.image}`
             );
             userMediaImage.setAttribute("alt", media.title + ", closeup view");
-
             return userMediaImage;
         } else if (media.video) {
             const userMediaVideo = createElement().createVideo(
