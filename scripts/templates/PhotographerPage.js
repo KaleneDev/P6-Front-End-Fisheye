@@ -13,7 +13,7 @@ function createProfileHeader(data) {
         "profile-contact"
     );
     contactButton.setAttribute("id", "btn-contact");
-    contactButton.setAttribute("tabindex", "-1");
+    contactButton.setAttribute("tabindex", "0");
 
     profileInfo.appendChild(
         createElement().createElementWithText("h1", "profile-name", name)
@@ -110,12 +110,12 @@ function displayLightbox(data, source, alt, index) {
         "lightbox-close"
     );
     lightboxClose.innerHTML =
-        '<i class="fa-solid fa-xmark" aria-label="Close dialog"></i>';
+        '<span class="fa-solid fa-xmark" aria-label="Close dialog" role="img></span>';
     const userProfileMedia = document.querySelector(".userProfile-media");
 
     addClickAndKeydownEvent(lightboxClose, () => {
         lightboxBackground.remove(); // Cela fermera la lightbox lorsqu'on clique sur le bouton de fermeture
-        userProfileMedia.setAttribute("tabindex", "-1");
+        userProfileMedia.setAttribute("tabindex", "0");
         userProfileMedia.focus();
     });
     lightboxContainer.appendChild(lightboxClose);
@@ -152,6 +152,17 @@ function displayLightbox(data, source, alt, index) {
 
     lightboxContainer.appendChild(prevButton);
     lightboxContainer.appendChild(nextButton);
+    // Ajouter un écouteur d'événements pour les touches du clavier
+    document.addEventListener("keydown", function (event) {
+        if (event.key === "ArrowRight") {
+            navigateLightbox(1);
+        } else if (event.key === "ArrowLeft") {
+            navigateLightbox(-1);
+        } else if (event.key === "Escape") {
+            lightboxBackground.remove();
+        }
+    });
+
     nextButton.focus();
 
     const media = filteredMedias || [];
@@ -171,7 +182,10 @@ function displayLightbox(data, source, alt, index) {
 
         // Assurez-vous d'avoir un conteneur pour les médias
         const lightboxTitle = document.querySelector(".lightbox-title");
-        lightboxTitle.textContent = newMediaAlt;
+
+        if (lightboxTitle) {
+            lightboxTitle.textContent = newMediaAlt;
+        }
         const lightboxMedia = document.querySelector(
             ".lightbox-container img, .lightbox-container video"
         );
@@ -193,7 +207,7 @@ function displayLightbox(data, source, alt, index) {
         );
         newMediaElement.setAttribute("alt", newMediaAlt);
         // Remplacer l'ancien élément média par le nouveau
-        if (lightboxMedia) {
+        if (lightboxMedia && lightboxMedia.parentNode === lightboxContainer) {
             lightboxContainer.replaceChild(newMediaElement, lightboxMedia);
         } else {
             lightboxContainer.appendChild(newMediaElement);
@@ -234,14 +248,14 @@ function createMediaElement(element, index, data) {
     userMediaTitle.textContent = element.title;
     userMediaLikes.textContent = `${element.likes}`;
     userMediaLikes.innerHTML =
-        element.likes + '<i class="fa-solid fa-heart" aria-label="likes"></i>';
+        element.likes + '<span class="fa-solid fa-heart" aria-label="likes" role="img"></span>';
 
     addClickAndKeydownEvent(userMediaLikes, () => {
         if (!element.isLiked) {
             element.likes += 1;
             userMediaLikes.innerHTML =
                 element.likes +
-                '<i class="fa-solid fa-heart" aria-label="likes"></i>';
+                '<span class="fa-solid fa-heart" aria-label="likes" role="img"></span>';
             element.isLiked = true;
             const likesPriceLikes = document.querySelector(
                 ".userProfile-likesPrice-likes"
@@ -332,7 +346,7 @@ const createLikesPrice = (data) => {
 const updateTotalLikes = (data, likesPriceLikes) => {
     const totalLikes = data.reduce((acc, curr) => acc + curr.likes, 0);
     likesPriceLikes.innerHTML =
-        totalLikes + '<i class="fa-solid fa-heart" aria-label="likes"></i>';
+        totalLikes + '<span class="fa-solid fa-heart" aria-label="likes" role="img"></span>';
 };
 
 function photographerTemplate(data) {

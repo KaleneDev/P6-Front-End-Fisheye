@@ -33,6 +33,13 @@ function displayModal(data) {
             closeModal();
         }
     });
+    // if i press escape, the modal should close
+    document.addEventListener("keydown", function (event) {
+        if (event.key === "Escape") {
+            console.log(event.key);
+            closeModal();
+        }
+    });
 }
 
 // if i submit the form, the modal should close

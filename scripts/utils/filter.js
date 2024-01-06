@@ -71,7 +71,6 @@ function toggleFilter(button, listboxContainer) {
 }
 
 function setupFilterOptions(listbox, data, filterButton, wrapperMedia) {
-
     addClickAndKeydownEvent(listbox, (e) => {
         e.stopPropagation();
         listbox.classList.add("open");
@@ -93,7 +92,7 @@ function setupFilterOptions(listbox, data, filterButton, wrapperMedia) {
             '<label id="' + option + '">' + option + "</label>";
 
         // Création de l'icône FontAwesome
-        const icon = document.createElement("i");
+        const icon = document.createElement("span");
         icon.className = "fa-solid  fa-angle-up"; // Assurez-vous que cette classe est correcte
         icon.style.display = option === "Popularité" ? "inline" : "none"; // Afficher pour "Popularité"
         optionElement.appendChild(icon);
@@ -108,8 +107,8 @@ function setupFilterOptions(listbox, data, filterButton, wrapperMedia) {
         const filterActive = () => {
             applyFilter(currentSort, data, wrapperMedia);
             icon.className = currentSort.ascending
-                ? "fa-solid fa-angle-up"
-                : "fa-solid fa-angle-down";
+                ? "fa-solid fa-angle-down"
+                : "fa-solid fa-angle-up";
         };
         addClickAndKeydownEvent(optionElement, () => {
             if (listbox.getAttribute("aria-expanded") === "true") {
@@ -132,7 +131,7 @@ function setupFilterOptions(listbox, data, filterButton, wrapperMedia) {
                     .querySelectorAll('#listbox > [role="option"]')
                     .forEach((el) => {
                         el.setAttribute("aria-selected", "false");
-                        el.querySelector("i").style.display = "none"; // Cacher l'icône
+                        el.querySelector("span").style.display = "none"; // Cacher l'icône
                         el.classList.remove("active"); // Supprimer la classe active
                     });
 
