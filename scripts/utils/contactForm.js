@@ -15,6 +15,15 @@ function displayModal(data) {
     submitButton.addEventListener("click", (e) => {
         e.preventDefault();
         if (checkForm()) {
+            // clean inputs and textareas
+            const inputs = document.querySelectorAll("input");
+            const textareas = document.querySelectorAll("textarea");
+            inputs.forEach((input) => {
+                input.value = "";
+            });
+            textareas.forEach((textarea) => {
+                textarea.value = "";
+            });
             closeModal();
         }
     });

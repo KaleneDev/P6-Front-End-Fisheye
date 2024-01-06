@@ -112,7 +112,7 @@ function displayLightbox(data, source, alt, index) {
     lightboxClose.innerHTML =
         '<i class="fa-solid fa-xmark" aria-label="Close dialog"></i>';
     const userProfileMedia = document.querySelector(".userProfile-media");
-    
+
     addClickAndKeydownEvent(lightboxClose, () => {
         lightboxBackground.remove(); // Cela fermera la lightbox lorsqu'on clique sur le bouton de fermeture
         userProfileMedia.setAttribute("tabindex", "-1");
@@ -153,7 +153,7 @@ function displayLightbox(data, source, alt, index) {
     lightboxContainer.appendChild(prevButton);
     lightboxContainer.appendChild(nextButton);
     nextButton.focus();
-  
+
     const media = filteredMedias || [];
 
     let currentImageIndex = index;
@@ -251,13 +251,14 @@ function createMediaElement(element, index, data) {
     });
     const mediaChecked = checkedTypeElement(element, data.name);
 
-   
     addClickAndKeydownEvent(userMediaContainer, (e) => {
+        e.preventDefault();
         e.stopPropagation();
         displayLightbox(data, mediaChecked.getDom().src, element.title, index);
     });
 
     addClickAndKeydownEvent(userMediaTitle, (e) => {
+        e.preventDefault();
         e.stopPropagation();
         displayLightbox(data, mediaChecked.getDom().src, element.title, index);
     });
