@@ -85,8 +85,6 @@ function createMainSection(data) {
 }
 // Fonction pour créer et afficher une lightbox
 function displayLightbox(data, source, alt, index) {
-    // console.log(filter(data).getFilteredArray());
-
     // Créer l'élément de fond de la lightbox
     const lightboxBackground = createElement().createElementWithClass(
         "div",
@@ -237,19 +235,7 @@ function createMediaElement(element, index, data) {
     userMediaLikes.textContent = `${element.likes}`;
     userMediaLikes.innerHTML =
         element.likes + '<i class="fa-solid fa-heart" aria-label="likes"></i>';
-    // userMediaLikes.addEventListener("click", () => {
-    //     if (!element.isLiked) {
-    //         element.likes += 1;
-    //         userMediaLikes.innerHTML =
-    //             element.likes +
-    //             '<i class="fa-solid fa-heart" aria-label="likes"></i>';
-    //         element.isLiked = true;
-    //         const likesPriceLikes = document.querySelector(
-    //             ".userProfile-likesPrice-likes"
-    //         );
-    //         updateTotalLikes(data.media, likesPriceLikes);
-    //     }
-    // });
+
     addClickAndKeydownEvent(userMediaLikes, () => {
         if (!element.isLiked) {
             element.likes += 1;
@@ -270,6 +256,7 @@ function createMediaElement(element, index, data) {
         e.stopPropagation();
         displayLightbox(data, mediaChecked.getDom().src, element.title, index);
     });
+
     addClickAndKeydownEvent(userMediaTitle, (e) => {
         e.stopPropagation();
         displayLightbox(data, mediaChecked.getDom().src, element.title, index);
@@ -332,10 +319,7 @@ const createLikesPrice = (data) => {
         "span",
         "userProfile-likesPrice-price"
     );
-    // const likes = data.media.reduce((acc, curr) => acc + curr.likes, 0);
 
-    // likesPriceLikes.innerHTML =
-    //     likes + '<i class="fa-solid fa-heart" aria-label="likes"></i>';
     updateTotalLikes(data.media, likesPriceLikes);
     likesPricePrice.textContent = `${data.price}€/jour`;
 
