@@ -313,6 +313,8 @@
   color: #901C1C;
 }
 .lightbox-container .lightbox-close {
+  width: 2.5rem;
+  height: 2.5rem;
   position: absolute;
   top: 2.5rem;
   right: -2.5rem;
@@ -452,20 +454,26 @@ h1 {
   align-items: center;
   justify-content: center;
   height: 400px;
-  width: 300px;
 }
-.photographer_section .userCard .userCard-imgLink {
-  height: 200px;
-  width: 200px;
-  overflow: hidden;
-  border-radius: 50%;
+.photographer_section .userCard-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 0 1rem;
+}
+.photographer_section .userCard .userCard-link {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 .photographer_section .userCard a {
   text-decoration: none;
 }
 .photographer_section .userCard-img {
+  border-radius: 50%;
   object-fit: cover;
-  margin-bottom: 1rem;
+  margin-bottom: 2rem;
   transform: scale(1.3);
 }
 .photographer_section .userCard-name {
@@ -488,18 +496,18 @@ h1 {
   color: #757575;
   font-size: 14px;
 }
-.photographer_section article {
+.photographer_section .userCard {
   justify-self: center;
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
 }
-.photographer_section article h2 {
+.photographer_section .userCard h2 {
   color: #D3573C;
   font-size: 36px;
 }
-.photographer_section article img {
+.photographer_section .userCard img {
   height: 200px;
   width: 200px;
 }

@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 function createProfileHeader(data) {
     const { name, city, country, tagline } = data;
     const header = createElement().createElementWithClass(
@@ -105,12 +106,13 @@ function displayLightbox(data, source, alt, index) {
     });
     lightboxBackground.appendChild(lightboxContainer);
 
-    const lightboxClose = createElement().createElementWithClass(
-        "button",
-        "lightbox-close"
-    );
+    const lightboxClose = document.createElement("button");
+
+    lightboxClose.classList.add("lightbox-close");
+
     lightboxClose.innerHTML =
-        '<span class="fa-solid fa-xmark" aria-label="Close dialog" role="img></span>';
+        '<span class="fa-solid fa-xmark" aria-label="Close dialog" role="img"></span>';
+
     const userProfileMedia = document.querySelector(".userProfile-media");
 
     addClickAndKeydownEvent(lightboxClose, () => {
@@ -248,7 +250,8 @@ function createMediaElement(element, index, data) {
     userMediaTitle.textContent = element.title;
     userMediaLikes.textContent = `${element.likes}`;
     userMediaLikes.innerHTML =
-        element.likes + '<span class="fa-solid fa-heart" aria-label="likes" role="img"></span>';
+        element.likes +
+        '<span class="fa-solid fa-heart" aria-label="likes" role="img"></span>';
 
     addClickAndKeydownEvent(userMediaLikes, () => {
         if (!element.isLiked) {
@@ -346,7 +349,8 @@ const createLikesPrice = (data) => {
 const updateTotalLikes = (data, likesPriceLikes) => {
     const totalLikes = data.reduce((acc, curr) => acc + curr.likes, 0);
     likesPriceLikes.innerHTML =
-        totalLikes + '<span class="fa-solid fa-heart" aria-label="likes" role="img"></span>';
+        totalLikes +
+        '<span class="fa-solid fa-heart" aria-label="likes" role="img"></span>';
 };
 
 function photographerTemplate(data) {

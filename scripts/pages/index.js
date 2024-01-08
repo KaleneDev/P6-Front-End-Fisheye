@@ -3,10 +3,9 @@ async function getPhotographers() {
     // mais il sera à remplacer avec une requête sur le fichier JSON en utilisant "fetch".
 
     let photographers = [];
-    await
-    fetch("./../data/photographers.json")
+    await fetch("./../data/photographers.json")
         .then((response) => {
-            if (!response.ok) { 
+            if (!response.ok) {
                 throw new Error(
                     `Erreur ${response.status} : ${response.statusText}`
                 );

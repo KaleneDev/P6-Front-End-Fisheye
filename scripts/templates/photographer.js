@@ -3,43 +3,45 @@ function photographerTemplate(data) {
     const picture = `assets/Photographers_ID_Photos/${portrait}`;
 
     function getUserCardDOM() {
-        const article = document.createElement("article");
+        const article = document.createElement("div");
+        const anchor = document.createElement("a");
         const img = document.createElement("img");
-        const imgLink = document.createElement("a");
-        const h2Link = document.createElement("a");
+        const infoDiv = document.createElement("div");
         const h2name = document.createElement("h2");
-        const spanCity = document.createElement("span");
+        const spanCityCountry = document.createElement("span");
         const spanPrice = document.createElement("span");
         const spanTagline = document.createElement("span");
 
-        img.setAttribute("alt", name);
-        img.setAttribute("src", picture);
-        imgLink.setAttribute("href", `photographer.html?id=${id}`);
-        imgLink.appendChild(img);
-        h2Link.setAttribute("href", `photographer.html?id=${id}`);
-        h2Link.appendChild(h2name);
-        
-        img.classList.add("userCard-img");
+        // Setting attributes and classes
         article.classList.add("userCard");
+        anchor.setAttribute("href", `photographer.html?id=${id}`);
+        anchor.classList.add("userCard-link");
+        img.setAttribute("src", picture);
+        img.setAttribute("alt", `Portrait de ${name}`);
+        img.classList.add("userCard-img");
+        infoDiv.classList.add("userCard-info");
         h2name.classList.add("userCard-name");
-        imgLink.classList.add("userCard-imgLink");
-        spanCity.classList.add("userCard-city");
+        spanCityCountry.classList.add("userCard-city-country");
         spanPrice.classList.add("userCard-price");
         spanTagline.classList.add("userCard-tagline");
 
+        // Setting text content
         h2name.textContent = name;
-        spanCity.textContent = city;
-        spanCity.textContent += `, ${country}`;
-        spanPrice.textContent = price;
-        spanPrice.textContent += "€/jour";
+        spanCityCountry.textContent = `${city}, ${country}`;
+        spanPrice.textContent = `${price}€/jour`;
         spanTagline.textContent = tagline;
 
-        article.appendChild(imgLink);
-        article.appendChild(h2Link);
-        article.appendChild(spanCity);
-        article.appendChild(spanTagline);
-        article.appendChild(spanPrice);
+        // Appending elements
+        anchor.appendChild(img);
+        anchor.appendChild(h2name);
+        infoDiv.appendChild(spanCityCountry);
+        infoDiv.appendChild(spanPrice);
+        infoDiv.appendChild(spanTagline);
+        article.appendChild(anchor);
+        article.appendChild(infoDiv);
+
         return article;
     }
+
     return { getUserCardDOM };
 }

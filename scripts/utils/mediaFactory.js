@@ -1,3 +1,5 @@
+/* eslint-disable space-before-function-paren */
+/* eslint-disable no-unused-vars */
 // if element is video or photo
 const checkedTypeElement = (media, photographerName) => {
     function isVideo() {

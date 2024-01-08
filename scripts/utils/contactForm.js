@@ -12,6 +12,7 @@ function displayModal(data) {
     modalTitle.focus();
 
     const submitButton = document.getElementById("submit");
+
     submitButton.addEventListener("click", (e) => {
         e.preventDefault();
         if (checkForm()) {
@@ -54,9 +55,9 @@ function closeModal() {
 
 function checkForm() {
     const fields = {
-        "first-name": "Veuillez entrer votre prénom",
-        "last-name": "Veuillez entrer votre nom",
-        email: "Veuillez entrer votre email",
+        "first-name": "Veuillez entrer un prénom valide",
+        "last-name": "Veuillez entrer un nom valide",
+        email: "Veuillez entrer une adresse email valide",
         message: "Veuillez entrer votre message",
     };
     let isValid = true;
@@ -72,10 +73,15 @@ function checkForm() {
         if (input.value === "") {
             error.innerHTML = fields[id];
             isValid = false;
+        } else if (id === "email" && !input.checkValidity()) {
+            error.innerHTML = "Adresse email invalide";
+            isValid = false;
+        } else if ((id === "first-name" || id === "last-name") && !/^[a-zA-Z]+$/.test(input.value)) {
+            error.innerHTML = "Seuls les caractères alphabétiques sont autorisés";
+            isValid = false;
         } else {
             error.innerHTML = "";
         }
-        console.log(input.value);
     }
 
     return isValid;
