@@ -1,3 +1,5 @@
+/* global createElement addClickAndKeydownEvent createMediaElement */
+// eslint-disable-next-line no-unused-vars
 let filteredMedias = [];
 
 function createFilter(data, userProfileMain, wrapperMedia) {
@@ -187,7 +189,7 @@ function applyFilter(sort, data, wrapperMedia) {
             filteredMedia = [...data.media];
     }
     updateMediaDisplay(filteredMedia, data, wrapperMedia);
-    // Ajout localStorage
+
     filteredMedias = filteredMedia;
     return filteredMedia;
 }

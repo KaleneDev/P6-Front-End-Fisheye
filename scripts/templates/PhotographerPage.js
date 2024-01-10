@@ -1,4 +1,5 @@
-/* eslint-disable no-undef */
+/* global createElement addClickAndKeydownEvent displayModal createFilter filteredMedias checkedTypeElement */
+
 function createProfileHeader(data) {
     const { name, city, country, tagline } = data;
     const header = createElement().createElementWithClass(
@@ -353,7 +354,8 @@ const updateTotalLikes = (data, likesPriceLikes) => {
         '<span class="fa-solid fa-heart" aria-label="likes" role="img"></span>';
 };
 
-function photographerTemplate(data) {
+// eslint-disable-next-line no-unused-vars
+function photographerPageTemplate(data) {
     function getUserProfileDOM() {
         const userProfile = createElement().createElementWithClass(
             "div",

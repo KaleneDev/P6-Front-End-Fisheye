@@ -1,3 +1,5 @@
+/* global createElement */
+// eslint-disable-next-line no-unused-vars
 function displayModal(data) {
     const modal = document.getElementById("contact_modal");
     modal.style.display = "block";
@@ -76,8 +78,12 @@ function checkForm() {
         } else if (id === "email" && !input.checkValidity()) {
             error.innerHTML = "Adresse email invalide";
             isValid = false;
-        } else if ((id === "first-name" || id === "last-name") && !/^[a-zA-Z]+$/.test(input.value)) {
-            error.innerHTML = "Seuls les caractères alphabétiques sont autorisés";
+        } else if (
+            (id === "first-name" || id === "last-name") &&
+            !/^[a-zA-Z]+$/.test(input.value)
+        ) {
+            error.innerHTML =
+                "Seuls les caractères alphabétiques sont autorisés";
             isValid = false;
         } else {
             error.innerHTML = "";
