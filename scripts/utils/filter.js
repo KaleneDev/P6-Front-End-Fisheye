@@ -1,3 +1,6 @@
+
+/* global createElement addClickAndKeydownEvent createMediaElement*/
+// eslint-disable-next-line no-unused-vars
 let filteredMedias = [];
 
 function createFilter(data, userProfileMain, wrapperMedia) {

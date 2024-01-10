@@ -1,3 +1,4 @@
+/* global photographerTemplate*/
 // Fonction pour récupérer les détails d'un photographe spécifique à partir de son ID
 async function getPhotographerById(id) {
     let photographerDetail = {};
