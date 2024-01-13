@@ -42,6 +42,9 @@ function displayModal(data) {
             console.log(event.key);
             closeModal();
         }
+        if (event.key === "Enter") {
+            submitButton.click();
+        }
     });
 }
 
