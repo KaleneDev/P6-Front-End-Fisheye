@@ -39,7 +39,6 @@ function displayModal(data) {
     // if i press escape, the modal should close
     document.addEventListener("keydown", function (event) {
         if (event.key === "Escape") {
-            console.log(event.key);
             closeModal();
         }
         if (event.key === "Enter") {
@@ -66,10 +65,11 @@ function checkForm() {
         message: "Veuillez entrer votre message",
     };
     let isValid = true;
-
+    let formData = {};
     for (const id in fields) {
         const input = document.getElementById(id);
         let error = input.nextSibling;
+        formData[id] = input.value;
         if (!error || error.className !== "error") {
             error = createElement().createElementWithClass("p", "error");
             input.parentNode.insertBefore(error, input.nextSibling);
@@ -93,5 +93,8 @@ function checkForm() {
         }
     }
 
+    if (isValid) {
+        console.log("Valeurs du formulaire:", formData);
+    }
     return isValid;
 }
